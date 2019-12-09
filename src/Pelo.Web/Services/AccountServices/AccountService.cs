@@ -22,7 +22,7 @@ namespace Pelo.Web.Services.AccountServices
         {
         }
 
-        #region IAccountService Members
+        #region IUserService Members
 
         public async Task<TResponse<LogonResponse>> LogOn(string username,
             string password)

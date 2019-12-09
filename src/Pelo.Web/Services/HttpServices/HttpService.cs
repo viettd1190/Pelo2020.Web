@@ -62,6 +62,9 @@ namespace Pelo.Web.Services.HttpServices
                                                                                       _contextHelper.GetToken());
                     }
 
+                    request.Headers.Add("Controller", _contextHelper.GetController());
+                    request.Headers.Add("Action", _contextHelper.GetAction());
+
                     var response = await client.SendAsync(request);
 
                     var res = await response.Content.ReadAsStringAsync();

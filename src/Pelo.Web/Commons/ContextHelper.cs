@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Pelo.Web.Commons
 {
@@ -8,9 +9,12 @@ namespace Pelo.Web.Commons
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ContextHelper(IHttpContextAccessor httpContextAccessor)
+        private IActionContextAccessor _actionContextAccessor;
+
+        public ContextHelper(IHttpContextAccessor httpContextAccessor,IActionContextAccessor actionContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
+            _actionContextAccessor = actionContextAccessor;
         }
 
         public string GetToken()
@@ -22,6 +26,16 @@ namespace Pelo.Web.Commons
 
             return ((ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity).Claims.ToList()[3]
                 .Value;
+        }
+
+        public string GetController()
+        {
+            return _actionContextAccessor.ActionContext?.RouteData?.Values["controller"]?.ToString()??string.Empty;
+        }
+
+        public string GetAction()
+        {
+            return _actionContextAccessor.ActionContext?.RouteData?.Values["action"]?.ToString() ?? string.Empty;
         }
     }
 }
