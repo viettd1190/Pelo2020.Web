@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pelo.Web", "Pelo.Web\Pelo.Web.csproj", "{3ECF9067-0BC4-4BB0-8572-F64E936D4186}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pelo.Common", "..\..\Pelo.Common\src\Pelo.Common\Pelo.Common.csproj", "{80A78785-4F3E-49AC-B592-C7046FE40FEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3ECF9067-0BC4-4BB0-8572-F64E936D4186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ECF9067-0BC4-4BB0-8572-F64E936D4186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ECF9067-0BC4-4BB0-8572-F64E936D4186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ECF9067-0BC4-4BB0-8572-F64E936D4186}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80A78785-4F3E-49AC-B592-C7046FE40FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A78785-4F3E-49AC-B592-C7046FE40FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A78785-4F3E-49AC-B592-C7046FE40FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A78785-4F3E-49AC-B592-C7046FE40FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BE3E272-7924-4604-A8A7-C46BB1A01A9C}
+	EndGlobalSection
+EndGlobal
