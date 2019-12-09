@@ -1,0 +1,352 @@
+﻿@using System.Security.Claims
+<aside class="sidebar">
+    <div class="scrollbar-inner">
+        <div class="user">
+            <div class="user__info" data-toggle="dropdown">
+                <img class="user__img" src="@(((ClaimsIdentity) User.Identity).Claims.ToList()[2].Value)" alt="">
+                <div>
+                    <div class="user__name">@User.Identity.Name</div>
+                    <div class="user__email">@(((ClaimsIdentity)User.Identity).Claims.ToList()[1].Value)</div>
+                </div>
+            </div>
+
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="">Thay đổi thông tin</a>
+                <a class="dropdown-item" href="@Url.Action("ChangePassword",
+                                                   "Account")">
+                    Đổi mật khẩu
+                </a>
+                @using (Html.BeginForm("Logout",
+                                    "Account",
+                                    FormMethod.Post,
+                                    new
+                                    {
+                                        id = "logoutForm",
+                                        @class = ""
+                                    }))
+                {
+                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a>
+                }
+
+            </div>
+        </div>
+
+        <ul class="navigation">
+            <li class="navigation__active">
+                <a href="@Url.Action("Index",
+                         "Home")">
+                    <i class="zmdi zmdi-home"></i> Trang chủ
+                </a>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-book"></i> CRM</a>
+
+                <ul>
+                    <li id="mnuCrm">
+                        <a href="@Url.Action("Index",
+                                 "Crm")">
+                            CRM
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "CrmStatus")">
+                            Trạng thái
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "CrmPriority")">
+                            Mức độ khẩn cấp
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "CustomerSource")">
+                            Nguồn khách hàng
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-labels"></i> Sản phẩm</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Product")">
+                            Danh sách sản phẩm
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "ProductGroup")">
+                            Nhóm sản phẩm
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Manufacturer")">
+                            Thương hiệu
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "ProductUnit")">
+                            Đơn vị tính
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "ProductStatus")">
+                            Tình trạng sản phẩm
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-assignment"></i> Đơn hàng</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Invoice")">
+                            Danh sách đơn hàng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "PaymentMethod")">
+                            Hình thức thanh toán
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "InvoiceStatus")">
+                            Trạng thái đơn hàng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "InvoiceStatusPermission")">
+                            Quyền trạng thái đơn hàng
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-face"></i> Khách hàng</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Customer")">
+                            Danh sách khách hàng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "CustomerGroup")">
+                            Nhóm khách hàng
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-comment"></i> Công việc</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Task")">
+                            Danh sách công việc
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "TaskStatus")">
+                            Trạng thái công việc
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "TaskPriority")">
+                            Mức độ gấp
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "TaskType")">
+                            Loại công việc
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "TaskLoop")">
+                            Thời gian lặp lại
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "TaskStatusPermission")">
+                            Quyền trạng thái công việc
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-receipt"></i> Biên nhận</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Receipt")">
+                            Danh sách biên nhận
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "ReceiptStatus")">
+                            Trạng thái biên nhận
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "ReceiptDescription")">
+                            Danh sách dịch vụ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "ReceiptStatusPermission")">
+                            Quyền trạng thái biên nhận
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-view-week"></i> Bảo hành</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Warranty")">
+                            Danh sách bảo hành
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "WarrantyStatus")">
+                            Trạng thái bảo hành
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "WarrantyDescription")">
+                            Mô tả bảo hành
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "WarrantyStatusPermission")">
+                            Quyền trạng thái bảo hành
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-account-add"></i> Tuyển dụng</a>
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Candidate")">
+                            Danh sách ứng viên
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "CandidateStatus")">
+                            Trạng thái ứng viên
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "Recruitment")">
+                            Danh sách tuyển dụng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index",
+                                 "RecruitmentStatus")">
+                            Trạng thái tuyển dụng
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navigation__sub">
+                <a href=""><i class="zmdi zmdi-settings"></i> Hệ thống</a>
+
+                <ul>
+                    <li id="mnuAppConfig">
+                        <a href="@Url.Action("Index",
+                                 "AppConfig")">
+                            Tham số cấu hình
+                        </a>
+                    </li>
+                    <li id="mnuProvince">
+                        <a href="@Url.Action("Index",
+                                 "Province")">
+                            Danh sách tỉnh thành
+                        </a>
+                    </li>
+                    <li id="mnuDistrict">
+                        <a href="@Url.Action("Index",
+                                 "District")">
+                            Danh sách quận huyện
+                        </a>
+                    </li>
+                    <li id="mnuWard">
+                        <a href="@Url.Action("Index",
+                                 "Ward")">
+                            Danh sách phường xã
+                        </a>
+                    </li>
+                    <li id="mnuBranch">
+                        <a href="@Url.Action("Index",
+                                 "Branch")">
+                            Chi nhánh
+                        </a>
+                    </li>
+                    <li id="mnuUser">
+                        <a href="@Url.Action("Index",
+                                 "User")">
+                            Danh sách người dùng
+                        </a>
+                    </li>
+                    <li id="mnuRole">
+                        <a href="@Url.Action("Index",
+                                 "Role")">
+                            Quyền hệ thống
+                        </a>
+                    </li>
+                    <li id="mnuActivity">
+                        <a href="@Url.Action("Index",
+                                 "ActivityLog")">
+                            Nhật ký đăng nhập
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</aside>

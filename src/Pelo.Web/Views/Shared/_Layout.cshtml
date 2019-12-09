@@ -1,77 +1,47 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Pelo.Web</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Vidia Admin</title>
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
-    </environment>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="~/vendors/material-design-iconic-font/css/material-design-iconic-font.css">
+    <link rel="stylesheet" href="~/vendors/animate.css/animate.min.css">
+    <link rel="stylesheet" href="~/vendors/jquery-scrollbar/jquery.scrollbar.css">
+    <link rel="stylesheet" href="~/vendors/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="~/vendors/select2/css/select2.min.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="~/css/app.min.css">
+    <link href="~/css/style.css" rel="stylesheet" />
+    @RenderSection("css",
+        false)
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Pelo.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - Pelo.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+<body data-ma-theme="green">
+@await Html.PartialAsync("_Notification")
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
-        </script>
-    </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+<main class="main">
+    @await Html.PartialAsync("_Header")
+    @await Html.PartialAsync("_Menu")
+    @await Html.PartialAsync("_Chat")
+    <section class="content">
+        @RenderBody()
+    </section>
+</main>
 
-    @RenderSection("Scripts", required: false)
+<script src="~/vendors/jquery/jquery.min.js"></script>
+<script src="~/vendors/popper.js/popper.min.js"></script>
+<script src="~/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/vendors/bootstrap-notify/bootstrap-notify.js"></script>
+<script src="~/vendors/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="~/vendors/jquery-scrollLock/jquery-scrollLock.min.js"></script>
+<script src="~/vendors/sweetalert2/sweetalert2.min.js"></script>
+<script src="~/vendors/select2/js/select2.full.min.js"></script>
+<script src="~/js/app.min.js"></script>
+<script src="~/js/script.js"></script>
+@RenderSection("js",
+    false)
 </body>
 </html>

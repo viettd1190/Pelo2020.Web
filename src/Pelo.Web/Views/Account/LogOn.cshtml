@@ -1,0 +1,94 @@
+﻿@model Pelo.Web.Models.Account.LogonModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="~/vendors/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="~/vendors/animate.css/animate.min.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="~/css/app.min.css">
+    <link href="~/css/style.css" rel="stylesheet" />
+</head>
+
+<body data-ma-theme="green">
+    <div class="login">
+
+        <!-- Login -->
+        <div class="login__block active" id="l-login">
+            <div class="login__block__header">
+                <i class="zmdi zmdi-account-circle"></i>
+                Vui lòng đăng nhập
+
+                <div class="actions actions--inverse login__block__actions">
+                    <div class="dropdown">
+                        <i data-toggle="dropdown" class="zmdi zmdi-more-vert actions__item"></i>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="@Url.Action("ForgotPassword",
+                                                                   "Account")">
+                                Quên mật khẩu?
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post">
+                @Html.ValidationSummary()
+                @Html.HiddenFor(c => c.ReturnUrl)
+                <div class="login__block__body">
+                    <div class="form-group form-group--float form-group--centered">
+                        @Html.TextBoxFor(c => c.Username,
+                                         new
+                                              {
+                                                     @class = "form-control",
+                                                     @autocomplete="off"
+                                             })
+                        <label>Tên đăng nhập</label>
+                        <i class="form-group__bar"></i>
+                    </div>
+
+                    <div class="form-group form-group--float form-group--centered">
+                        @Html.PasswordFor(c => c.Password,
+                                          new
+                                               {
+                                                      @class = "form-control",
+                                                   @autocomplete="off"
+                                              })
+                        <label>Mật khẩu</label>
+                        <i class="form-group__bar"></i>
+                    </div>
+
+                    <div class="form-group form-group--float form-group--centered">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(c => c.RememberMe)
+                            <label class="checkbox__label" for="RememberMe">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <i class="form-group__bar"></i>
+                    </div>
+
+                    <button type="submit" class="btn btn--icon login__block__btn">
+                        <i class="zmdi zmdi-long-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/vendors/jquery/jquery.min.js"></script>
+    <script src="~/vendors/popper.js/popper.min.js"></script>
+    <script src="~/vendors/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/js/app.min.js"></script>
+</body>
+</html>
