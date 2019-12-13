@@ -1,0 +1,139 @@
+﻿@using Pelo.Common.Dtos.Branch
+@using Pelo.Common.Dtos.Department
+@using Pelo.Common.Dtos.Role
+@model object
+
+@{
+    ViewBag.Title = "Danh sách người dùng";
+    Layout = "_Layout";
+}
+
+<div class="card">
+    <div class="card-body" id="accordion">
+        <h4 class="card-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                Danh sách người dùng
+            </a>
+        </h4>
+        <div class="row panel-collapse collapse in" id="collapse1">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtCode" placeholder="Mã nhân viên">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-0">
+                    <input type="text" class="form-control" id="txtName" placeholder="Tên nhân viên">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-0">
+                    <input type="text" class="form-control" id="txtPhone" placeholder="Số điện thoại">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtBranch">
+                        <option value="0">--Tất cả chi nhánh--</option>
+                        @{
+                            var branches = ViewBag.Branches as IEnumerable<BranchSimpleModel>;
+                            if (branches != null)
+                            {
+                                foreach (var branch in branches)
+                                {
+                                    <option value="@branch.Id">@branch.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtDepartment">
+                        <option value="0">--Tất cả phòng ban--</option>
+                        @{
+                            var departments = ViewBag.Departments as IEnumerable<DepartmentSimpleModel>;
+                            if (departments != null)
+                            {
+                                foreach (var department in departments)
+                                {
+                                    <option value="@department.Id">@department.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtRole">
+                        <option value="0">--Tất cả nhóm quyền--</option>
+                        @{
+                            var roles = ViewBag.Roles as IEnumerable<RoleSimpleModel>;
+                            if (roles != null)
+                            {
+                                foreach (var role in roles)
+                                {
+                                    <option value="@role.Id">@role.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtStatus">
+                        <option value="-1">--Tất cả tình trạng--</option>
+                        <option value="1">--Vẫn còn làm--</option>
+                        <option value="0">--Đã nghỉ việc--</option>
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <a class="btn btn-primary" href="javascript:reloadData();">Tìm kiếm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tblUsers" class="table table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th></th>
+                        <th>Mã nhân viên</th>
+                        <th>Tên nhân viên</th>
+                        <th>Chi nhánh</th>
+                        <th>Phòng ban</th>
+                        <th>Ngày tạo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <button class="btn btn-success btn--action" onclick="window.location.href='/User/Add'"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+
+@section js{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="~/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendors/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/js/pages/user/index.js"></script>
+}
+

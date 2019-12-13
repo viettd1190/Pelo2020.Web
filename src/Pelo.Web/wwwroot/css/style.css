@@ -103,3 +103,14 @@
     top: 5px;
     width: 7px;
 }
+
+.table thead th {
+    text-align:center;
+}
+td.datatable-cell-center {
+    vertical-align:middle;
+    padding:0 !important;
+}
+tr.inactive {
+    background-color:#c2c2c2;
+}

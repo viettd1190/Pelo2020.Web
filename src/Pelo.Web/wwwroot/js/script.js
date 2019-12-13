@@ -21,11 +21,11 @@ function showNotification(data) {
         return;
     }
     var icon = 'danger';
-    if (data.isSuccess === true) {
+    if (data.is_success === true) {
         icon = 'success';
     }
     var msg = 'Cập nhật thành công';
-    if(data.isSuccess===false) {
+    if (data.is_success===false) {
         msg=data.message;
     }
     $.notify({
@@ -43,6 +43,12 @@ function showNotification(data) {
                         }
                 }
         });
+}
+function isNull(data) {
+    if(data) {
+        return data;
+    }
+    return '';
 }
 function paddingDisplay2Number(value) {
     if (value < 10) {
