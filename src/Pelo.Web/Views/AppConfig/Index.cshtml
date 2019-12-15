@@ -1,0 +1,63 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "Danh sách cấu hình";
+    Layout = "_Layout";
+}
+
+<div class="card">
+    <div class="card-body" id="accordion">
+        <h4 class="card-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                Danh sách cấu hình
+            </a>
+        </h4>
+        <div class="row panel-collapse collapse in" id="collapse1">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtName" placeholder="Tên cấu hình">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-0">
+                    <input type="text" class="form-control" id="txtDescription" placeholder="Ghi chú">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <a class="btn btn-primary" href="javascript:reloadData();">Tìm kiếm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tblAppConfigs" class="table table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th></th>
+                        <th>Tên cấu hình</th>
+                        <th>Giá trị</th>
+                        <th>Ghi chú</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <button class="btn btn-success btn--action" onclick="window.location.href='/AppConfig/Add'"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+
+@section js{
+    <script src="~/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendors/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/js/pages/app_config/index.js"></script>
+}
+

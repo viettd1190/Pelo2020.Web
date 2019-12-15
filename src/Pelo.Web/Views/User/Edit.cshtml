@@ -130,7 +130,15 @@
                     @Html.ValidationMessageFor(c => c.RoleId)
                 </div>
                 <div class="form-group form-group--float">
-                    @Html.TextBoxFor(c => c.Description,
+                    <div class="checkbox">
+                        <input type="checkbox" id="IsActive" name="IsActive" checked="@Model.IsActive">
+                        <label class="checkbox__label" for="IsActive">Đang hoạt động</label>
+                    </div>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Description)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextAreaFor(c => c.Description,
                                      new {
                                                  @class = "form-control"
                                          })

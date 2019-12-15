@@ -31,6 +31,9 @@ namespace Pelo.Web.Models.User
         [JsonProperty("department_id")]
         public int DepartmentId { get; set; }
 
+        [JsonProperty("is_active")]
+        public bool IsActive { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
     }

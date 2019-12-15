@@ -2,16 +2,21 @@
 $(document).ready(function () {
     addActiveClass('mnuUser');
     initTable();
-    //$('#txtName').keyup(function (key) {
-    //    if (key.keyCode === 13) {
-    //        reloadData();
-    //    }
-    //});
-    //$('#txtDescription').keyup(function (key) {
-    //    if (key.keyCode === 13) {
-    //        reloadData();
-    //    }
-    //});
+    $('#txtCode').keyup(function (key) {
+        if (key.keyCode === 13) {
+            reloadData();
+        }
+    });
+    $('#txtName').keyup(function (key) {
+        if (key.keyCode === 13) {
+            reloadData();
+        }
+    });
+    $('#txtPhone').keyup(function (key) {
+        if (key.keyCode === 13) {
+            reloadData();
+        }
+    });
     reloadData();
 });
 function initTable() {
