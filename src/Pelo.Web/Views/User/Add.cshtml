@@ -1,0 +1,164 @@
+﻿@using Pelo.Common.Dtos.Branch
+@using Pelo.Common.Dtos.Department
+@using Pelo.Common.Dtos.Role
+@model Pelo.Web.Models.User.InsertUserModel
+
+@{
+    ViewBag.Title = "Thêm nhân viên";
+    Layout = "_Layout";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Thêm nhân viên</h4>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index")">
+                    Danh sách nhân viên
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Thêm nhân viên</li>
+        </ol>
+
+        <form class="row" method="post">
+            <div class="col-md-12">
+                <h3 class="card-body__title">Thông tin nhân viên</h3>
+                @Html.ValidationSummary()
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Username,
+                                     new {
+                                                 @class = "form-control",
+                                                 @autocomplete="none"
+                                         })
+                    <label>Tên đăng nhập</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Username)
+
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.PasswordFor(c => c.Password,
+                                      new {
+                                                  @class = "form-control",
+                                                  @autocomplete="none"
+                                          })
+                    <label>Mật khẩu</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Password)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.DisplayName,
+                                     new {
+                                                 @class = "form-control"
+                                         })
+                    <label>Tên hiển thị</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.DisplayName)
+
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.FullName,
+                                     new {
+                                                 @class = "form-control"
+                                         })
+                    <label>Tên đầy đủ</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.FullName)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.PhoneNumber,
+                                     new {
+                                                 @class = "form-control"
+                                         })
+                    <label>Số điện thoại</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.PhoneNumber)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Email,
+                                     new {
+                                                 @class = "form-control"
+                                         })
+                    <label>Email</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Email)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="BranchId" name="BranchId">
+                        <option value="0">--Không xác định--</option>
+                        @{
+                            var branches = ViewBag.Branches as IEnumerable<BranchSimpleModel>;
+                            if (branches != null)
+                            {
+                                foreach (var branch in branches)
+                                {
+                                    <option value="@branch.Id">@branch.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Chi nhánh</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.BranchId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="DepartmentId" name="DepartmentId">
+                        <option value="0">--Không xác định--</option>
+                        @{
+                            var departments = ViewBag.Departments as IEnumerable<DepartmentSimpleModel>;
+                            if (departments != null)
+                            {
+                                foreach (var department in departments)
+                                {
+                                    <option value="@department.Id">@department.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Phòng ban</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.DepartmentId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="RoleId" name="RoleId">
+                        <option value="0">--Không xác định--</option>
+                        @{
+                            var roles = ViewBag.Roles as IEnumerable<RoleSimpleModel>;
+                            if (roles != null)
+                            {
+                                foreach (var role in roles)
+                                {
+                                    <option value="@role.Id">@role.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Nhóm quyền</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.RoleId)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Description,
+                                     new {
+                                                 @class = "form-control"
+                                         })
+                    <label>Ghi chú</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Description)
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                <a class="btn btn-secondary" href="@Url.Action("Index")">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section js{
+    <script src="~/js/pages/user/add.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#BranchId').val('@Model.BranchId');
+            $('#DepartmentId').val('@Model.DepartmentId');
+            $('#RoleId').val('@Model.RoleId');
+        });
+    </script>
+}

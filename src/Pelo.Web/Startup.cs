@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,25 +26,28 @@ namespace Pelo.Web
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+                                                    {
+                                                        // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                                                        options.CheckConsentNeeded = context => true;
+                                                        options.MinimumSameSitePolicy = SameSiteMode.None;
+                                                    });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-                    {
-                        options.AccessDeniedPath = new PathString("/Account/Access");
-                        options.LoginPath = new PathString("/Account/LogOn");
-                        options.LogoutPath = new PathString("/Account/Logout");
-                        options.ReturnUrlParameter = "ReturnUrl";
-                        options.SlidingExpiration = true;
-                    });
+                                       {
+                                           options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                                           options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                                       })
+                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+                               options =>
+                               {
+                                   options.AccessDeniedPath = new PathString("/Account/Access");
+                                   options.LoginPath = new PathString("/Account/LogOn");
+                                   options.LogoutPath = new PathString("/Account/Logout");
+                                   options.ReturnUrlParameter = "ReturnUrl";
+                                   options.SlidingExpiration = true;
+                               });
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -60,11 +61,12 @@ namespace Pelo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+                              IHostingEnvironment env)
         {
             app.UseAuthentication();
 
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -76,10 +78,10 @@ namespace Pelo.Web
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                       {
+                           routes.MapRoute(name: "default",
+                                           template: "{controller=Home}/{action=Index}/{id?}");
+                       });
 
             app.UseCookiePolicy();
         }

@@ -1,3 +1,3 @@
 ﻿$(document).ready(function () {
-    addActiveClass('mnuAppConfig');
+    addActiveClass('mnuUser');
 });

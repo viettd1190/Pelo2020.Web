@@ -16,6 +16,12 @@
 
         public const string USER_DELETE = BASE_API_URL + "/api/user/{0}";
 
+        public const string USER_INSERT = BASE_API_URL + "/api/user";
+
+        public const string USER_GET_BY_ID = BASE_API_URL + "/api/user/{0}";
+
+        public const string USER_UPDATE = BASE_API_URL + "/api/user";
+
         #endregion
 
         #region Role
