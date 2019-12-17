@@ -55,5 +55,33 @@
         public const string APP_CONFIG_UPDATE = BASE_API_URL + "/api/app_config";
 
         #endregion
+
+        #region CustomerGroup
+
+        public const string CUSTOMER_GROUP_GET_BY_PAGING = BASE_API_URL + "/api/customer_group?name={0}&page={1}&page_size={2}&column_order={3}&sort_dir={4}";
+
+        public const string CUSTOMER_GROUP_INSERT = BASE_API_URL + "/api/customer_group";
+
+        public const string CUSTOMER_GROUP_GET_BY_ID = BASE_API_URL + "/api/customer_group/{0}";
+
+        public const string CUSTOMER_GROUP_UPDATE = BASE_API_URL + "/api/customer_group";
+
+        public const string CUSTOMER_GROUP_DELETE = BASE_API_URL + "/api/customer_group/{0}";
+
+        #endregion
+
+        #region CustomerVip
+
+        public const string CUSTOMER_VIP_GET_BY_PAGING = BASE_API_URL + "/api/customer_vip?page={0}&page_size={1}&column_order={2}&sort_dir={3}";
+
+        public const string CUSTOMER_VIP_INSERT = BASE_API_URL + "/api/customer_vip";
+
+        public const string CUSTOMER_VIP_GET_BY_ID = BASE_API_URL + "/api/customer_vip/{0}";
+
+        public const string CUSTOMER_VIP_UPDATE = BASE_API_URL + "/api/customer_vip";
+
+        public const string CUSTOMER_VIP_DELETE = BASE_API_URL + "/api/customer_vip/{0}";
+
+        #endregion
     }
 }

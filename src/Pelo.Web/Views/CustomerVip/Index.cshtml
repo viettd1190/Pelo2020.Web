@@ -1,0 +1,35 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "Danh sách mức độ thân thiết khách hàng";
+    Layout = "_Layout";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tblCustomerVips" class="table table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th></th>
+                        <th>Tên mức độ thân thiết</th>
+                        <th>Màu sắc</th>
+                        <th>Mức độ lợi nhuận</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <button class="btn btn-success btn--action" onclick="window.location.href='/CustomerVip/Add'"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+
+@section js{
+    <script src="~/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendors/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/js/pages/customer_vip/index.js"></script>
+}
+

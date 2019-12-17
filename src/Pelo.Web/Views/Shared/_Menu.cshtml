@@ -142,16 +142,22 @@
                 <a href=""><i class="zmdi zmdi-face"></i> Khách hàng</a>
 
                 <ul>
-                    <li>
+                    <li id="mnuCustomer">
                         <a href="@Url.Action("Index",
                                  "Customer")">
                             Danh sách khách hàng
                         </a>
                     </li>
-                    <li>
+                    <li id="mnuCustomerGroup">
                         <a href="@Url.Action("Index",
-                                 "CustomerGroup")">
+                                             "CustomerGroup")">
                             Nhóm khách hàng
+                        </a>
+                    </li>
+                    <li id="mnuCustomerVip">
+                        <a href="@Url.Action("Index",
+                                             "CustomerVip")">
+                            Mức độ thân thiết
                         </a>
                     </li>
                 </ul>
