@@ -83,5 +83,19 @@
         public const string CUSTOMER_VIP_DELETE = BASE_API_URL + "/api/customer_vip/{0}";
 
         #endregion
+
+        #region Customer
+
+        public const string CUSTOMER_GET_BY_PAGING = BASE_API_URL + "/api/customer?code={0}&name={1}&province_id={2}&district_id={3}&ward_id={4}&address={5}&phone={6}&email={7}customer_group_id={8}&customer_vip_id={9}&page={10}&page_size={11}&column_order={12}&sort_dir={13}";
+
+        public const string CUSTOMER_INSERT = BASE_API_URL + "/api/customer";
+
+        public const string CUSTOMER_GET_BY_ID = BASE_API_URL + "/api/customer/{0}";
+
+        public const string CUSTOMER_UPDATE = BASE_API_URL + "/api/customer";
+
+        public const string CUSTOMER_DELETE = BASE_API_URL + "/api/customer/{0}";
+
+        #endregion
     }
 }
