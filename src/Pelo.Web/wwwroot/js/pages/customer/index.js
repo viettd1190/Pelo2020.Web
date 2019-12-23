@@ -68,28 +68,28 @@ function initTable() {
                 className: 'datatable-cell-center',
                 orderable: true,
                 render: function (data, type, row, meta) {
-                    return '<div style="text-align:center;margin:auto;"><span class="badge badge-danger">' + data + '</span></div>';
+                    return '<div style="text-align:center;margin:auto;"><span class="badge badge-danger">' + isNull(data) + '</span></div>';
                 }
             }, {
                 targets: 2,
                 data: 'name',
                 orderable: true,
                 render: function (data, type, row, meta) {
-                    var name = '<span>' + data + '</span><br/>';
-                    var phone='<span><a href="tel:'+data.phone+'">'+data.phone+'</a></span><br/>';
+                    var name = '<span style="font-weight:600;font-size:16px;">' + data + '</span><br/>';
+                    var phone = '<span><a href="tel:' + row.phone + '">' + row.phone+'</a></span><br/>';
                     var phone2 = '';
-                    if(data.phone2) {
-                        phone2='<span><a href="tel:'+data.phone_2+'">'+data.phone_2+'</a></span><br/>';
+                    if (isNull(row.phone2)) {
+                        phone2 = '<span><a href="tel:' + row.phone_2 + '">' + row.phone_2+'</a></span><br/>';
                     }
                     var phone3 = '';
-                    if (data.phone3) {
-                        phone3 = '<span><a href="tel:' + data.phone_3 + '">' + data.phone_3 + '</a></span><br/>';
+                    if (isNull(row.phone3)) {
+                        phone3 = '<span><a href="tel:' + row.phone_3 + '">' + row.phone_3 + '</a></span><br/>';
                     }
-                    var customerGroup = '<span>Nhóm khách hàng: ' + data.customer_group + '</span><br/>';
-                    var customerVip = '<span>KHTT: ' + data.customer_vip + '</span><br/>';
+                    var customerGroup = '<span>Nhóm khách hàng: ' + isNull(row.customer_group) + '</span><br/>';
+                    var customerVip = '<span>KHTT: ' + isNull(row.customer_vip) + '</span><br/>';
                     var email='';
-                    if(data.email) {
-                        email='<span>Email: <a href="mailto: '+data.email+'">'+data.email+'</a></span><br/>';
+                    if (isNull(row.email)) {
+                        email = '<span>Email: <a href="mailto: ' + row.email + '">' + row.email+'</a></span><br/>';
                     }
                     return '<div style="padding:10px;">'+name+phone+phone2+phone3+customerGroup+customerVip+email+'</div>';
                 }
@@ -98,11 +98,19 @@ function initTable() {
                 data: 'address',
                 orderable: false,
                 render: function (data, type, row, meta) {
-                    var address = '<span>Địa chỉ: ' + data + '</span><br/>';
-                    var province = '<span>' + data.province + '</span><br/>';
-                    var district = '<span>' + data.district + '</span><br/>';
-                    var ward='<span>'+data.ward+'</span>';
+                    var address = '<span>Địa chỉ: ' + isNull(data) + '</span><br/>';
+                    var province = '<span>' + isNull(row.province) + '</span><br/>';
+                    var district = '<span>' + isNull(row.district) + '</span><br/>';
+                    var ward = '<span>' + isNull(row.ward)+'</span>';
                     return '<div style="padding:10px;">' + address + province + district + ward + '</div>';
+                }
+            }, {
+                targets: 5,
+                data: 'date_updated',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return '<div style="text-align:center;">' + moment(data).format('DD-MM-YYYY hh:mm') + '</div>';
                 }
             },{
                 targets: 10,

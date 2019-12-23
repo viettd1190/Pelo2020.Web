@@ -68,6 +68,8 @@
 
         public const string CUSTOMER_GROUP_DELETE = BASE_API_URL + "/api/customer_group/{0}";
 
+        public const string CUSTOMER_GROUP_GET_ALL = BASE_API_URL + "/api/customer_group/all";
+
         #endregion
 
         #region CustomerVip
@@ -81,6 +83,8 @@
         public const string CUSTOMER_VIP_UPDATE = BASE_API_URL + "/api/customer_vip";
 
         public const string CUSTOMER_VIP_DELETE = BASE_API_URL + "/api/customer_vip/{0}";
+
+        public const string CUSTOMER_VIP_GET_ALL = BASE_API_URL + "/api/customer_vip/all";
 
         #endregion
 

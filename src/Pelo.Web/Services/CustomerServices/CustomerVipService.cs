@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace Pelo.Web.Services.CustomerServices
         Task<TResponse<bool>> Update(UpdateCustomerVipRequest request);
 
         Task<TResponse<bool>> Delete(int id);
+
+        Task<TResponse<IEnumerable<CustomerVipSimpleModel>>> GetAll();
     }
 
     public class CustomerVipService : BaseService,
@@ -170,6 +173,28 @@ namespace Pelo.Web.Services.CustomerServices
             catch (Exception exception)
             {
                 return await Fail<bool>(exception);
+            }
+        }
+
+        public async Task<TResponse<IEnumerable<CustomerVipSimpleModel>>> GetAll()
+        {
+            try
+            {
+                var url = ApiUrl.CUSTOMER_GROUP_GET_ALL;
+                var response = await HttpService.Send<IEnumerable<CustomerVipSimpleModel>>(url,
+                                                                                           null,
+                                                                                           HttpMethod.Get,
+                                                                                           true);
+                if(response.IsSuccess)
+                {
+                    return await Ok(response.Data);
+                }
+
+                return await Fail<IEnumerable<CustomerVipSimpleModel>>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<IEnumerable<CustomerVipSimpleModel>>(exception);
             }
         }
 

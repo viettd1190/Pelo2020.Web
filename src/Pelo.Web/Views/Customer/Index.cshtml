@@ -1,0 +1,148 @@
+﻿@using Pelo.Common.Dtos.CustomerGroup
+@using Pelo.Common.Dtos.CustomerVip
+@model object
+
+@{
+    ViewBag.Title = "Danh sách khách hàng";
+    Layout = "_Layout";
+}
+
+<div class="card">
+    <div class="card-body" id="accordion">
+        <h4 class="card-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                Danh sách khách hàng
+            </a>
+        </h4>
+        <div class="row panel-collapse collapse in" id="collapse1">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtCode" placeholder="Mã khách hàng">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtName" placeholder="Tên khách hàng">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtProvince">
+                        <option value="0">--Tất cả tỉnh/thành--</option>
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtProvince">
+                        <option value="0">--Tất cả quận/huyện--</option>
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtWard">
+                        <option value="0">--Tất cả phường/xã--</option>
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtAddress" placeholder="Địa chỉ">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtPhone" placeholder="Số điện thoại">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtEmail" placeholder="Email">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtCustomerGroup">
+                        <option value="0">--Tất cả nhóm khách hàng--</option>
+                        @{
+                            var customerGroups = ViewBag.CustomerGroups as List<CustomerGroupSimpleModel>;
+                            if(customerGroups!=null) {
+                                foreach (var customerGroup in customerGroups) {
+                                    <option value="@customerGroup.Id">@customerGroup.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtCustomerVip">
+                        <option value="0">--Tất cả KHTT--</option>
+                        @{
+                            var customerVips = ViewBag.CustomerVips as List<CustomerVipSimpleModel>;
+                            if (customerVips != null)
+                            {
+                                foreach (var customerVip in customerVips)
+                                {
+                                    <option value="@customerVip.Id">@customerVip.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <a class="btn btn-primary" href="javascript:reloadData();">Tìm kiếm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tblCustomers" class="table table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th></th>
+                        <th>Mã khách hàng</th>
+                        <th>Tên khách hàng</th>
+                        <th>Địa chỉ</th>
+                        <th>Ghi chú</th>
+                        <th>Ngày cập nhật</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <button class="btn btn-success btn--action" onclick="window.location.href='/Customer/Add'"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+
+@section js{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="~/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendors/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/js/pages/customer/index.js"></script>
+}
+
