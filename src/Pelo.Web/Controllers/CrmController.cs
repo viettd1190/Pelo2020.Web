@@ -5,25 +5,17 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Pelo.Common.Dtos.Branch;
 using Pelo.Common.Dtos.Crm;
 using Pelo.Common.Dtos.CrmPriority;
 using Pelo.Common.Dtos.CrmStatus;
 using Pelo.Common.Dtos.CrmType;
 using Pelo.Common.Dtos.CustomerSource;
-using Pelo.Common.Dtos.Department;
 using Pelo.Common.Dtos.ProductGroup;
-using Pelo.Common.Dtos.Role;
-using Pelo.Common.Dtos.User;
-using Pelo.Common.Extensions;
-using Pelo.Common.Models;
 using Pelo.Web.Attributes;
 using Pelo.Web.Models.Datatables;
-using Pelo.Web.Models.User;
 using Pelo.Web.Services.CrmServices;
 using Pelo.Web.Services.CustomerServices;
 using Pelo.Web.Services.MasterServices;
-using Pelo.Web.Services.UserServices;
 
 namespace Pelo.Web.Controllers
 {
@@ -32,26 +24,26 @@ namespace Pelo.Web.Controllers
     {
         readonly IMapper _mapper;
 
-        private ICrmService _crmService;
+        private readonly ICrmPriorityService _crmPriorityService;
 
-        private ICrmTypeService _crmTypeService;
+        private readonly ICrmService _crmService;
 
-        private ICrmStatusService _crmStatusService;
+        private readonly ICrmStatusService _crmStatusService;
 
-        private ICrmPriorityService _crmPriorityService;
+        private readonly ICrmTypeService _crmTypeService;
 
-        private ICustomerSourceService _customerSourceService;
+        private readonly ICustomerSourceService _customerSourceService;
 
-        private IProductGroupService _productGroupService;
+        private readonly IProductGroupService _productGroupService;
 
         public CrmController(ICrmService crmService,
-                              ICrmTypeService crmTypeService,
-                              ICrmStatusService crmStatusService,
-                              ICrmPriorityService crmPriorityService,
-                              ICustomerSourceService customerSourceService,
-                              IProductGroupService productGroupService,
-                              IMapper mapper,
-                              ILogger<CrmController> logger) : base(logger)
+                             ICrmTypeService crmTypeService,
+                             ICrmStatusService crmStatusService,
+                             ICrmPriorityService crmPriorityService,
+                             ICustomerSourceService customerSourceService,
+                             IProductGroupService productGroupService,
+                             IMapper mapper,
+                             ILogger<CrmController> logger) : base(logger)
         {
             _crmService = crmService;
             _crmTypeService = crmTypeService;
@@ -69,17 +61,17 @@ namespace Pelo.Web.Controllers
                 var customerSources = await _customerSourceService.GetAll();
                 if(customerSources.IsSuccess)
                     return new Tuple<IEnumerable<CustomerSourceSimpleModel>, string>(customerSources.Data,
-                                                                           string.Empty);
+                                                                                     string.Empty);
 
                 Logger.LogInformation(customerSources.Message);
                 return new Tuple<IEnumerable<CustomerSourceSimpleModel>, string>(new List<CustomerSourceSimpleModel>(),
-                                                                       customerSources.Message);
+                                                                                 customerSources.Message);
             }
             catch (Exception exception)
             {
                 Logger.LogInformation(exception.ToString());
                 return new Tuple<IEnumerable<CustomerSourceSimpleModel>, string>(new List<CustomerSourceSimpleModel>(),
-                                                                       exception.ToString());
+                                                                                 exception.ToString());
             }
         }
 
@@ -90,17 +82,17 @@ namespace Pelo.Web.Controllers
                 var crmStatuses = await _crmStatusService.GetAll();
                 if(crmStatuses.IsSuccess)
                     return new Tuple<IEnumerable<CrmStatusSimpleModel>, string>(crmStatuses.Data,
-                                                                             string.Empty);
+                                                                                string.Empty);
 
                 Logger.LogInformation(crmStatuses.Message);
                 return new Tuple<IEnumerable<CrmStatusSimpleModel>, string>(new List<CrmStatusSimpleModel>(),
-                                                                         crmStatuses.Message);
+                                                                            crmStatuses.Message);
             }
             catch (Exception exception)
             {
                 Logger.LogInformation(exception.ToString());
                 return new Tuple<IEnumerable<CrmStatusSimpleModel>, string>(new List<CrmStatusSimpleModel>(),
-                                                                         exception.ToString());
+                                                                            exception.ToString());
             }
         }
 
@@ -111,17 +103,17 @@ namespace Pelo.Web.Controllers
                 var productGroupes = await _productGroupService.GetAll();
                 if(productGroupes.IsSuccess)
                     return new Tuple<IEnumerable<ProductGroupSimpleModel>, string>(productGroupes.Data,
-                                                                                 string.Empty);
+                                                                                   string.Empty);
 
                 Logger.LogInformation(productGroupes.Message);
                 return new Tuple<IEnumerable<ProductGroupSimpleModel>, string>(new List<ProductGroupSimpleModel>(),
-                                                                             productGroupes.Message);
+                                                                               productGroupes.Message);
             }
             catch (Exception exception)
             {
                 Logger.LogInformation(exception.ToString());
                 return new Tuple<IEnumerable<ProductGroupSimpleModel>, string>(new List<ProductGroupSimpleModel>(),
-                                                                             exception.ToString());
+                                                                               exception.ToString());
             }
         }
 
@@ -130,19 +122,19 @@ namespace Pelo.Web.Controllers
             try
             {
                 var crmTypees = await _crmTypeService.GetAll();
-                if (crmTypees.IsSuccess)
+                if(crmTypees.IsSuccess)
                     return new Tuple<IEnumerable<CrmTypeSimpleModel>, string>(crmTypees.Data,
-                                                                                   string.Empty);
+                                                                              string.Empty);
 
                 Logger.LogInformation(crmTypees.Message);
                 return new Tuple<IEnumerable<CrmTypeSimpleModel>, string>(new List<CrmTypeSimpleModel>(),
-                                                                               crmTypees.Message);
+                                                                          crmTypees.Message);
             }
             catch (Exception exception)
             {
                 Logger.LogInformation(exception.ToString());
                 return new Tuple<IEnumerable<CrmTypeSimpleModel>, string>(new List<CrmTypeSimpleModel>(),
-                                                                               exception.ToString());
+                                                                          exception.ToString());
             }
         }
 
@@ -151,19 +143,19 @@ namespace Pelo.Web.Controllers
             try
             {
                 var crmPriorityes = await _crmPriorityService.GetAll();
-                if (crmPriorityes.IsSuccess)
+                if(crmPriorityes.IsSuccess)
                     return new Tuple<IEnumerable<CrmPrioritySimpleModel>, string>(crmPriorityes.Data,
-                                                                              string.Empty);
+                                                                                  string.Empty);
 
                 Logger.LogInformation(crmPriorityes.Message);
                 return new Tuple<IEnumerable<CrmPrioritySimpleModel>, string>(new List<CrmPrioritySimpleModel>(),
-                                                                          crmPriorityes.Message);
+                                                                              crmPriorityes.Message);
             }
             catch (Exception exception)
             {
                 Logger.LogInformation(exception.ToString());
                 return new Tuple<IEnumerable<CrmPrioritySimpleModel>, string>(new List<CrmPrioritySimpleModel>(),
-                                                                          exception.ToString());
+                                                                              exception.ToString());
             }
         }
 
@@ -171,31 +163,31 @@ namespace Pelo.Web.Controllers
         {
             var customerSources = await GetAllCustomerSources();
             ViewBag.Customersources = customerSources.Item1.ToList();
-            if (!string.IsNullOrEmpty(customerSources.Item2))
+            if(!string.IsNullOrEmpty(customerSources.Item2))
                 ModelState.AddModelError("",
                                          customerSources.Item2);
 
             var productGroups = await GetAllProductGroups();
             ViewBag.ProductGroups = productGroups.Item1.ToList();
-            if (!string.IsNullOrEmpty(productGroups.Item2))
+            if(!string.IsNullOrEmpty(productGroups.Item2))
                 ModelState.AddModelError("",
                                          productGroups.Item2);
 
             var crmTypes = await GetAllCrmTypes();
             ViewBag.CrmTypes = crmTypes.Item1.ToList();
-            if (!string.IsNullOrEmpty(crmTypes.Item2))
+            if(!string.IsNullOrEmpty(crmTypes.Item2))
                 ModelState.AddModelError("",
                                          crmTypes.Item2);
 
             var crmPriorities = await GetAllCrmPriorities();
             ViewBag.CrmPriorities = crmPriorities.Item1.ToList();
-            if (!string.IsNullOrEmpty(crmPriorities.Item2))
+            if(!string.IsNullOrEmpty(crmPriorities.Item2))
                 ModelState.AddModelError("",
                                          crmPriorities.Item2);
 
             var crmStatuses = await GetAllCrmStatuses();
             ViewBag.CrmStatuses = crmStatuses.Item1.ToList();
-            if (!string.IsNullOrEmpty(crmStatuses.Item2))
+            if(!string.IsNullOrEmpty(crmStatuses.Item2))
                 ModelState.AddModelError("",
                                          crmStatuses.Item2);
         }
