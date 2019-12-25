@@ -101,5 +101,41 @@
         public const string CUSTOMER_DELETE = BASE_API_URL + "/api/customer/{0}";
 
         #endregion
+
+        #region CustomerSource
+
+        public const string CUSTOMER_SOURCE_GET_ALL = BASE_API_URL + "/api/customer_source/all";
+
+        #endregion
+
+        #region CrmStatus
+
+        public const string CRM_STATUS_GET_ALL = BASE_API_URL + "/api/crm_status/all";
+
+        #endregion
+
+        #region CrmType
+
+        public const string CRM_TYPE_GET_ALL = BASE_API_URL + "/api/crm_type/all";
+
+        #endregion
+
+        #region CrmPriority
+
+        public const string CRM_PRIORITY_GET_ALL = BASE_API_URL + "/api/crm_priority/all";
+
+        #endregion
+
+        #region ProductGroup
+
+        public const string PRODUCT_GROUP_GET_ALL = BASE_API_URL + "/api/product_group/all";
+
+        #endregion
+
+        #region Crm
+
+        public const string CRM_GET_BY_PAGING = BASE_API_URL + "/api/crm?code={0}&customer_code={1}&customer_name={2}&customer_phone={3}&customer_address={4}&province_id={5}&district_id={6}&ward_id={7}&customer_group_id={8}&customer_vip_id={9}&customer_source_id={10}&product_group_id={11}&crm_status_id={12}&crm_type_id={13}&crm_priority_id={14}&visit={15}&from_date={16}&to_date={17}&user_created_id={18}&date_created={19}&user_care_id={20}&need={21}";
+
+        #endregion
     }
 }
