@@ -41,16 +41,18 @@ namespace Pelo.Web.Controllers
                     if (logonDetail != null)
                     {
                         var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name,
-                                logonDetail.DisplayName),
-                            new Claim(ClaimTypes.GivenName,
-                                logonDetail.Username),
-                            new Claim("avatar",
-                                logonDetail.Avatar),
-                            new Claim("Token",
-                                result.Data.AccessToken)
-                        };
+                                     {
+                                             new Claim(ClaimTypes.NameIdentifier,
+                                                       logonDetail.Id.ToString()),
+                                             new Claim(ClaimTypes.Name,
+                                                       logonDetail.DisplayName),
+                                             new Claim(ClaimTypes.GivenName,
+                                                       logonDetail.Username),
+                                             new Claim("avatar",
+                                                       logonDetail.Avatar),
+                                             new Claim("Token",
+                                                       result.Data.AccessToken)
+                                     };
                         var identity = new ClaimsIdentity(claims,
                             "cookie");
                         var principal = new ClaimsPrincipal(identity);

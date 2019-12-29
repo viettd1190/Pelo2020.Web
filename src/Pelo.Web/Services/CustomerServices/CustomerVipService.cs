@@ -180,7 +180,7 @@ namespace Pelo.Web.Services.CustomerServices
         {
             try
             {
-                var url = ApiUrl.CUSTOMER_GROUP_GET_ALL;
+                var url = ApiUrl.CUSTOMER_VIP_GET_ALL;
                 var response = await HttpService.Send<IEnumerable<CustomerVipSimpleModel>>(url,
                                                                                            null,
                                                                                            HttpMethod.Get,

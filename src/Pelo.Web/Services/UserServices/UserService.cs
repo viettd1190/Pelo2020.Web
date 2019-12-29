@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,6 +23,10 @@ namespace Pelo.Web.Services.UserServices
         Task<TResponse<bool>> Update(UpdateUserRequest request);
 
         Task<TResponse<bool>> Delete(int id);
+
+        Task<TResponse<IEnumerable<UserDisplaySimpleModel>>> GetAll();
+
+        Task<TResponse<bool>> IsBelongDefaultCrmRole();
     }
 
     public class UserService : BaseService,
@@ -200,6 +205,50 @@ namespace Pelo.Web.Services.UserServices
                 if(response.IsSuccess)
                 {
                     return await Ok(true);
+                }
+
+                return await Fail<bool>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<bool>(exception);
+            }
+        }
+
+        public async Task<TResponse<IEnumerable<UserDisplaySimpleModel>>> GetAll()
+        {
+            try
+            {
+                var url = ApiUrl.USER_GET_ALL;
+                var response = await HttpService.Send<IEnumerable<UserDisplaySimpleModel>>(url,
+                                                                                           null,
+                                                                                           HttpMethod.Get,
+                                                                                           true);
+                if(response.IsSuccess)
+                {
+                    return await Ok(response.Data);
+                }
+
+                return await Fail<IEnumerable<UserDisplaySimpleModel>>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<IEnumerable<UserDisplaySimpleModel>>(exception);
+            }
+        }
+
+        public async Task<TResponse<bool>> IsBelongDefaultCrmRole()
+        {
+            try
+            {
+                var url = ApiUrl.USER_IS_DEFAULT_CRM;
+                var response = await HttpService.Send<bool>(url,
+                                                            null,
+                                                            HttpMethod.Get,
+                                                            true);
+                if (response.IsSuccess)
+                {
+                    return await Ok(response.Data);
                 }
 
                 return await Fail<bool>(response.Message);

@@ -49,6 +49,8 @@ namespace Pelo.Web
                                    options.SlidingExpiration = true;
                                });
 
+            services.AddOutputCaching();
+
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -77,6 +79,7 @@ namespace Pelo.Web
 
             app.UseStaticFiles();
 
+            app.UseOutputCaching();
             app.UseMvc(routes =>
                        {
                            routes.MapRoute(name: "default",
