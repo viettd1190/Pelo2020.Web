@@ -104,6 +104,8 @@
 
         public const string CUSTOMER_DELETE = BASE_API_URL + "/api/customer/{0}";
 
+        public const string CUSTOMER_GET_BY_PHONE = BASE_API_URL + "/api/customer/get_by_phone?phone={0}";
+
         #endregion
 
         #region CustomerSource

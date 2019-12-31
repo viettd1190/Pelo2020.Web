@@ -19,6 +19,8 @@ namespace Pelo.Web.Services.CustomerServices
 
         Task<TResponse<GetCustomerByIdResponse>> GetById(int id);
 
+        Task<TResponse<CustomerByPhoneResponse>> GetByPhone(string phone);
+
         Task<TResponse<bool>> Update(UpdateCustomerRequest request);
 
         Task<TResponse<bool>> Delete(int id);
@@ -55,11 +57,11 @@ namespace Pelo.Web.Services.CustomerServices
                         name = request.Columns[1]
                                       .Search?.Value ?? string.Empty;
                         var province = request.Columns[2]
-                                                 .Search?.Value ?? string.Empty;
+                                              .Search?.Value ?? string.Empty;
                         var district = request.Columns[3]
-                                                 .Search?.Value ?? string.Empty;
+                                              .Search?.Value ?? string.Empty;
                         var ward = request.Columns[4]
-                                             .Search?.Value ?? string.Empty;
+                                          .Search?.Value ?? string.Empty;
                         address = request.Columns[5]
                                          .Search?.Value ?? string.Empty;
                         phone = request.Columns[6]
@@ -67,9 +69,9 @@ namespace Pelo.Web.Services.CustomerServices
                         email = request.Columns[7]
                                        .Search?.Value ?? string.Empty;
                         var customerGroup = request.Columns[8]
-                                                      .Search?.Value ?? string.Empty;
+                                                   .Search?.Value ?? string.Empty;
                         var customerVip = request.Columns[9]
-                                                    .Search?.Value ?? string.Empty;
+                                                 .Search?.Value ?? string.Empty;
 
                         if(!string.IsNullOrEmpty(province))
                         {
@@ -200,6 +202,29 @@ namespace Pelo.Web.Services.CustomerServices
             catch (Exception exception)
             {
                 return await Fail<GetCustomerByIdResponse>(exception);
+            }
+        }
+
+        public async Task<TResponse<CustomerByPhoneResponse>> GetByPhone(string phone)
+        {
+            try
+            {
+                var url = string.Format(ApiUrl.CUSTOMER_GET_BY_PHONE,
+                                        phone);
+                var response = await HttpService.Send<CustomerByPhoneResponse>(url,
+                                                                               null,
+                                                                               HttpMethod.Get,
+                                                                               true);
+                if(response.IsSuccess)
+                {
+                    return await Ok(response.Data);
+                }
+
+                return await Fail<CustomerByPhoneResponse>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<CustomerByPhoneResponse>(exception);
             }
         }
 

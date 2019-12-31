@@ -9,8 +9,10 @@ using Pelo.Common.Dtos.Customer;
 using Pelo.Common.Dtos.CustomerGroup;
 using Pelo.Common.Dtos.CustomerVip;
 using Pelo.Web.Attributes;
+using Pelo.Web.Models.Customer;
 using Pelo.Web.Models.Datatables;
 using Pelo.Web.Services.CustomerServices;
+using Pelo.Web.Services.MasterServices;
 
 namespace Pelo.Web.Controllers
 {
@@ -23,17 +25,21 @@ namespace Pelo.Web.Controllers
 
         private readonly ICustomerVipService _customerVipService;
 
+        private IProvinceService _provinceService;
+
         readonly IMapper _mapper;
 
         public CustomerController(ICustomerService customerService,
                                   ICustomerGroupService customerGroupService,
                                   ICustomerVipService customerVipService,
+                                  IProvinceService provinceService,
                                   IMapper mapper,
                                   ILogger<CustomerController> logger) : base(logger)
         {
             _customerService = customerService;
             _customerVipService = customerVipService;
             _customerGroupService = customerGroupService;
+            _provinceService = provinceService;
             _mapper = mapper;
         }
 
@@ -106,6 +112,79 @@ namespace Pelo.Web.Controllers
         {
             await SetViewBag();
             return View();
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 86400)]
+        public async Task<IActionResult> GetAllProvinces()
+        {
+            var provinces = await _provinceService.GetAllProvinces();
+            if (provinces.IsSuccess)
+            {
+                return Json(provinces.Data);
+            }
+
+            return null;
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 86400,
+                VaryByParam = "id")]
+        public async Task<IActionResult> GetAllDistricts(int id)
+        {
+            var districts = await _provinceService.GetAllDistricts(id);
+            if (districts.IsSuccess)
+            {
+                return Json(districts.Data);
+            }
+
+            return null;
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 86400,
+                VaryByParam = "id")]
+        public async Task<IActionResult> GetAllWards(int id)
+        {
+            var wards = await _provinceService.GetAllWards(id);
+            if (wards.IsSuccess)
+            {
+                return Json(wards.Data);
+            }
+
+            return null;
+        }
+
+        public IActionResult FindByPhoneNumber(string nextAction)
+        {
+            return View(new FindCustomerByPhoneViewModel
+                        {
+                                NextAction = nextAction
+                        });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FindByPhoneNumber(FindCustomerByPhoneViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var customer = await _customerService.GetByPhone(model.PhoneNumber);
+                if(customer.IsSuccess)
+                {
+                    return RedirectToAction("Index",
+                                            model.NextAction);
+                }
+                ModelState.AddModelError("",customer.Message);
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Add()
+        {
+            var customerGroups = await GetAllCustomerGroups();
+            ViewBag.CustomerGroups = customerGroups.Item1.ToList();
+            return View(new InsertCustomerModel());
         }
 
         //public IActionResult Add()

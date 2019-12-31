@@ -1,36 +1,143 @@
-﻿@model Pelo.Web.Models.CustomerGroup.InsertCustomerGroupModel
+﻿@using Pelo.Common.Dtos.CustomerGroup
+@model Pelo.Web.Models.Customer.InsertCustomerModel
 
 @{
-    ViewBag.Title = "Thêm nhóm khách hàng";
+    ViewBag.Title = "Thêm khách hàng";
     Layout = "_Layout";
 }
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Thêm nhóm khách hàng</h4>
+        <h4 class="card-title">Thêm khách hàng</h4>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index")">
-                    Danh sách nhóm khách hàng
+                    Danh sách khách hàng
                 </a>
             </li>
-            <li class="breadcrumb-item active">Thêm nhóm khách hàng</li>
+            <li class="breadcrumb-item active">Thêm khách hàng</li>
         </ol>
 
         <form class="row" method="post">
             <div class="col-md-12">
-                <h3 class="card-body__title">Thông tin nhóm khách hàng</h3>
+                <h3 class="card-body__title">Thông tin khách hàng</h3>
                 @Html.ValidationSummary()
                 <div class="form-group form-group--float">
                     @Html.TextBoxFor(c => c.Name,
-                                     new {
+                                     new
+                                          {
                                                  @class = "form-control",
-                                                 @autocomplete="none"
+                                                 @autocomplete = "none"
                                          })
-                    <label>Tên nhóm khách hàng</label>
+                    <label>Tên khách hàng</label>
                     <i class="form-group__bar"></i>
                     @Html.ValidationMessageFor(c => c.Name)
-
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Phone,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Số điện thoại</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Phone)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Phone2,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Số điện thoại 2</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Phone2)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Phone3,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Số điện thoại 3</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Phone3)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Email,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Email</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Email)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Address,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Địa chỉ</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Address)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="ProvinceId" name="ProvinceId" onchange="loadDistricts();">
+                        <option value="0">--Chọn tỉnh/thành--</option>
+                    </select>
+                    <label>Tỉnh/thành</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.ProvinceId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="DistrictId" name="DistrictId" onchange="loadWards();">
+                        <option value="0">--Chọn quận/huyện--</option>
+                    </select>
+                    <label>Quận/huyện</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.DistrictId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="WardId" name="WardId">
+                        <option value="0">--Chọn phường/xã--</option>
+                    </select>
+                    <label>Phường/xã</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.WardId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="CustomerGroupId" name="CustomerGroupId">
+                        <option value="0">--Nhóm khách hàng--</option>
+                        @{
+                            var customerGroups = ViewBag.CustomerGroups as List<CustomerGroupSimpleModel>;
+                            if(customerGroups!=null) {
+                                foreach (var customerGroup in customerGroups) {
+                                    <option value="@customerGroup.Id">@customerGroup.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Nhóm khách hàng</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.CustomerGroupId)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextAreaFor(c => c.Description,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Ghi chú</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Description)
                 </div>
                 <button type="submit" class="btn btn-primary">Thêm mới</button>
                 <a class="btn btn-secondary" href="@Url.Action("Index")">Hủy</a>
@@ -40,5 +147,5 @@
 </div>
 
 @section js{
-    <script src="~/js/pages/customer_group/add.js"></script>
+    <script src="~/js/pages/customer/add.js"></script>
 }
