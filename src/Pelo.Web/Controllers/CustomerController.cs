@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Pelo.Common.Dtos.Customer;
 using Pelo.Common.Dtos.CustomerGroup;
 using Pelo.Common.Dtos.CustomerVip;
+using Pelo.Common.Extensions;
 using Pelo.Web.Attributes;
 using Pelo.Web.Models.Customer;
 using Pelo.Web.Models.Datatables;
@@ -185,6 +186,38 @@ namespace Pelo.Web.Controllers
             var customerGroups = await GetAllCustomerGroups();
             ViewBag.CustomerGroups = customerGroups.Item1.ToList();
             return View(new InsertCustomerModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(InsertCustomerModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _customerService.Insert(_mapper.Map<InsertCustomerModel, InsertCustomerRequest>(model));
+                if(result.IsSuccess)
+                {
+                    TempData["Update"] = result.ToJson();
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError("",
+                                         result.Message);
+            }
+
+            var customerGroups = await GetAllCustomerGroups();
+            ViewBag.CustomerGroups = customerGroups.Item1.ToList();
+            return View(model);
+        }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            var customer = await _customerService.GetDetail(id);
+            if(customer.IsSuccess)
+            {
+                return View(customer.Data);
+            }
+
+            return View("Notfound");
         }
 
         //public IActionResult Add()

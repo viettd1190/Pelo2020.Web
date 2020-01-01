@@ -1,6 +1,6 @@
 ﻿var table = null;
 $(document).ready(function () {
-    addActiveClass('menuCustomer');
+    addActiveClass('mnuCustomer');
     initTable();
     $('#txtCode').keyup(function (key) {
         if (key.keyCode === 13) {
@@ -118,7 +118,7 @@ function initTable() {
                 orderable: false,
                 className: 'tdButton',
                 render: function (data, type, row, meta) {
-                    return '<div style="display:flex;"><a class="btn btn-primary" href="/Customer/Edit/' +
+                    return '<div style="display:flex;"><a class="btn btn-primary" href="/Customer/Detail/' +
                         data +
                         '"><i class="zmdi zmdi-edit"></i></a>&nbsp;<a class="btn btn-danger" href="javascript:deleteCustomer(' +
                         data +

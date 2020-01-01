@@ -106,6 +106,8 @@
 
         public const string CUSTOMER_GET_BY_PHONE = BASE_API_URL + "/api/customer/get_by_phone?phone={0}";
 
+        public const string CUSTOMER_GET_DETAIL = BASE_API_URL + "/api/customer/detail/{0}";
+
         #endregion
 
         #region CustomerSource

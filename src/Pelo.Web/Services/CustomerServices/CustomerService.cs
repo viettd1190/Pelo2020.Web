@@ -24,6 +24,8 @@ namespace Pelo.Web.Services.CustomerServices
         Task<TResponse<bool>> Update(UpdateCustomerRequest request);
 
         Task<TResponse<bool>> Delete(int id);
+
+        Task<TResponse<GetCustomerDetailResponse>> GetDetail(int id);
     }
 
     public class CustomerService : BaseService,
@@ -270,6 +272,29 @@ namespace Pelo.Web.Services.CustomerServices
             catch (Exception exception)
             {
                 return await Fail<bool>(exception);
+            }
+        }
+
+        public async Task<TResponse<GetCustomerDetailResponse>> GetDetail(int id)
+        {
+            try
+            {
+                var url = string.Format(ApiUrl.CUSTOMER_GET_DETAIL,
+                                        id);
+                var response = await HttpService.Send<GetCustomerDetailResponse>(url,
+                                                                               null,
+                                                                               HttpMethod.Get,
+                                                                               true);
+                if (response.IsSuccess)
+                {
+                    return await Ok(response.Data);
+                }
+
+                return await Fail<GetCustomerDetailResponse>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<GetCustomerDetailResponse>(exception);
             }
         }
 

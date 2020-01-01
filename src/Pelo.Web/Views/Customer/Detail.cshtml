@@ -1,0 +1,267 @@
+﻿@using Newtonsoft.Json
+@using Pelo.Common.Dtos.CustomerGroup
+@using Pelo.Common.Extensions
+@model Pelo.Common.Dtos.Customer.GetCustomerDetailResponse
+
+@{
+    ViewBag.Title = "Thông tin chi tiết khách hàng";
+    Layout = "_Layout";
+}
+
+@section css{
+    <style>
+        .label-title {
+            /*font-weight:600;*/
+            font-size: 15px;
+        }
+
+        .label-content {
+            font-size: 15px;
+            color: #666EE8;
+        }
+
+        .form-row {
+            padding-top: 10px;
+        }
+        
+        a.title-history {
+            width:100%;
+            text-align:left;
+            margin-top:10px;
+            background-color:#c3c3c3;
+            color:#333;
+        }
+        </style>
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Thông tin khách hàng</h4>
+        <form>
+            @Html.ValidationSummary()
+            @Html.HiddenFor(c => c.Id)
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Mã khách hàng: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.Code</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Người tạo: </strong></label>
+                        <a href="tel:@Model.UserCreatedPhone" class="col-sm-9 label-content col-form-label">@Model.UserCreated</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Tên khách hàng: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Ngày tạo: </strong></label>
+                        <label class="col-sm-3 label-title col-form-label">@string.Format("{0:dd/MM/yyyy}", Model.DateCreated) </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Điện thoại: </strong></label>
+                        <a href="tel:@Model.Phone" class="col-sm-9 label-content col-form-label">@Model.Phone</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Email: </strong></label>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Email))
+                            {
+                                <a href="mailto:@Model.Email" class="col-sm-9 label-content col-form-label">@Model.Email</a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Điện thoại 2: </strong></label>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Phone2))
+                            {
+                                <a href="tel:@Model.Phone2" class="col-sm-9 label-content col-form-label">@Model.Phone2</a>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Điện thoại 3: </strong></label>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Phone3))
+                            {
+                                <a href="tel:@Model.Phone3" class="col-sm-9 label-content col-form-label">@Model.Phone3</a>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Địa chỉ: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.Address </label>
+                    </div>
+                </div>
+                <div class="clearfix">
+                </div>
+            </div>
+            @{
+                if (!string.IsNullOrEmpty(Model.Province))
+                {
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <label class="col-sm-3 label-title col-form-label"><strong>@Model.ProvinceType: </strong></label>
+                                <label class="col-sm-9 label-content col-form-label">@Model.Province</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <label class="col-sm-3 label-title col-form-label"><strong>@Model.DistrictType: </strong></label>
+                                <label class="col-sm-3 label-title col-form-label">@Model.District</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <label class="col-sm-3 label-title col-form-label"><strong>@Model.WardType: </strong></label>
+                                <label class="col-sm-3 label-title col-form-label">@Model.Ward</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Nhóm khách hàng: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.CustomerGroup</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Mức độ thân thiết: </strong></label>
+                        <label class="col-sm-3 label-title col-form-label">@Model.CustomerVip</label>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Số lợi nhuận bên HD Pelo ghi nhận: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.Profit.ToMoneyFormat() VNĐ</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Số lợi nhuận kế toán điều chỉnh: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.ProfitUpdate.ToMoneyFormat() VNĐ</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Số lợi nhuận khách trả cho Vidia: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@((Model.Profit + Model.ProfitUpdate).ToMoneyFormat()) VNĐ</label>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Bạn đang phụ trách: </strong></label>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.UserCare))
+                            {
+                                <a href="tel:@Model.UserCarePhone" class="col-sm-9 label-content col-form-label">@Model.UserCare</a>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Nguồn giúp quen biết khách lần đầu: </strong></label>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.UserFirst))
+                            {
+                                <a href="tel:@Model.UserFirstPhone" class="col-sm-9 label-content col-form-label">@Model.UserFirst</a>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 label-title col-form-label"><strong>Ghi chú: </strong></label>
+                        <label class="col-sm-9 label-content col-form-label">@Model.Description </label>
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <a href="@Url.Action("Edit",
+                                 Model.Id)" class="btn btn-primary" style="color:white;">
+                        <i class="zmdi zmdi-edit"></i>
+                        Sửa thông tin
+                    </a>
+                </div>
+                <br />
+                <small class="form-text text-muted">* Cập nhật lần cuối ngày: @string.Format("{0:dd/MM/yyyy}", Model.DateUpdated)</small>
+            </div>
+        </form>
+        <h2 style="text-align:center;font-size:20px;" class="label-content">Lịch sử giao dịch của khách hàng</h2>
+    <a class="btn btn-primary collapsed title-history" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Đơn hàng (0)
+    </a>
+    <div class="mt-2 collapse" id="collapseExample" style="">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+    </div>
+        <br />
+        <a class="btn btn-primary collapsed title-history" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            CRM (0)
+        </a>
+        <br />
+        <a class="btn btn-primary collapsed title-history" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Công việc (0)
+        </a>
+        <br />
+        <a class="btn btn-primary collapsed title-history" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Biên nhận (0)
+        </a>
+        <br />
+        <a class="btn btn-primary collapsed title-history" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Bảo hành (0)
+        </a>
+        <br />
+        
+    </div>
+</div>
+
+@section js{
+    <script src="~/js/pages/customer/detail.js"></script>
+}
