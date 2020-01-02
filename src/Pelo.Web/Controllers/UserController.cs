@@ -139,15 +139,6 @@ namespace Pelo.Web.Controllers
             return Json(DatatableResponse<GetUserPagingResponse>.Init(request.Draw));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _userService.GetAll();
-            if (result.IsSuccess) return Json(result.Data);
-
-            return null;
-        }
-
         public async Task<IActionResult> Index()
         {
             await SetViewBag();

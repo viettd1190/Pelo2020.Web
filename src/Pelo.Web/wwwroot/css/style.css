@@ -31,11 +31,11 @@
 }
 
 .dataTables_filter {
-    display: none !important;
+    display:none !important;
 }
 
 .table-responsive {
-    overflow-x: hidden;
+    overflow-x:hidden;
 }
 
 .table td, .table th {
@@ -43,7 +43,7 @@
 }
 
 #accordion {
-    padding-bottom: 0 !important;
+    padding-bottom:0 !important;
 }
 
 /*************** Notifications ***************/
@@ -105,14 +105,12 @@
 }
 
 .table thead th {
-    text-align: center;
+    text-align:center;
 }
-
 td.datatable-cell-center {
-    vertical-align: middle;
-    padding: 0 !important;
+    vertical-align:middle;
+    padding:0 !important;
 }
-
 tr.inactive {
-    background-color: #c2c2c2;
+    background-color:#c2c2c2;
 }
