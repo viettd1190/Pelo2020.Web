@@ -48,7 +48,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> GetList(DatatableRequest request)
         {
             var result = await _customerService.GetByPaging(request);
-            if(result.IsSuccess) return Json(result.Data);
+            if (result.IsSuccess) return Json(result.Data);
 
             return Json(DatatableResponse<GetCustomerPagingResponse>.Init(request.Draw));
         }
@@ -58,7 +58,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var customerGroups = await _customerGroupService.GetAll();
-                if(customerGroups.IsSuccess)
+                if (customerGroups.IsSuccess)
                     return new Tuple<IEnumerable<CustomerGroupSimpleModel>, string>(customerGroups.Data,
                                                                                     string.Empty);
 
@@ -79,7 +79,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var customerVips = await _customerVipService.GetAll();
-                if(customerVips.IsSuccess)
+                if (customerVips.IsSuccess)
                     return new Tuple<IEnumerable<CustomerVipSimpleModel>, string>(customerVips.Data,
                                                                                   string.Empty);
 
@@ -99,12 +99,12 @@ namespace Pelo.Web.Controllers
         {
             var customerGroups = await GetAllCustomerGroups();
             ViewBag.CustomerGroups = customerGroups.Item1.ToList();
-            if(!string.IsNullOrEmpty(customerGroups.Item2))
+            if (!string.IsNullOrEmpty(customerGroups.Item2))
                 ModelState.AddModelError("",
                                          customerGroups.Item2);
             var customerVips = await GetAllCustomerVips();
             ViewBag.CustomerVips = customerVips.Item1.ToList();
-            if(!string.IsNullOrEmpty(customerVips.Item2))
+            if (!string.IsNullOrEmpty(customerVips.Item2))
                 ModelState.AddModelError("",
                                          customerVips.Item2);
         }
@@ -159,23 +159,23 @@ namespace Pelo.Web.Controllers
         public IActionResult FindByPhoneNumber(string nextAction)
         {
             return View(new FindCustomerByPhoneViewModel
-                        {
-                                NextAction = nextAction
-                        });
+            {
+                NextAction = nextAction
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> FindByPhoneNumber(FindCustomerByPhoneViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var customer = await _customerService.GetByPhone(model.PhoneNumber);
-                if(customer.IsSuccess)
+                if (customer.IsSuccess)
                 {
                     return RedirectToAction("Index",
                                             model.NextAction);
                 }
-                ModelState.AddModelError("",customer.Message);
+                ModelState.AddModelError("", customer.Message);
             }
 
             return View(model);
@@ -191,13 +191,20 @@ namespace Pelo.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(InsertCustomerModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = await _customerService.Insert(_mapper.Map<InsertCustomerModel, InsertCustomerRequest>(model));
-                if(result.IsSuccess)
+                if (result.IsSuccess)
                 {
                     TempData["Update"] = result.ToJson();
-                    return RedirectToAction("Index");
+                    if (model.NextAction == "Customer")
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Add", model.NextAction, new { phone = model.Phone });
+                    }
                 }
 
                 ModelState.AddModelError("",
@@ -212,7 +219,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var customer = await _customerService.GetDetail(id);
-            if(customer.IsSuccess)
+            if (customer.IsSuccess)
             {
                 return View(customer.Data);
             }
