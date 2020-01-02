@@ -22,6 +22,7 @@
         <form class="row" method="post">
             <div class="col-md-12">
                 <h3 class="card-body__title">Thông tin khách hàng</h3>
+                @Html.HiddenFor(c => c.NextAction)
                 @Html.ValidationSummary()
                 <div class="form-group form-group--float">
                     @Html.TextBoxFor(c => c.Name,
@@ -118,8 +119,10 @@
                         <option value="0">--Nhóm khách hàng--</option>
                         @{
                             var customerGroups = ViewBag.CustomerGroups as List<CustomerGroupSimpleModel>;
-                            if(customerGroups!=null) {
-                                foreach (var customerGroup in customerGroups) {
+                            if (customerGroups != null)
+                            {
+                                foreach (var customerGroup in customerGroups)
+                                {
                                     <option value="@customerGroup.Id">@customerGroup.Name</option>
                                 }
                             }
