@@ -381,5 +381,34 @@ namespace Pelo.Web.Controllers
 
             return null;
         }
+
+        public async Task<IActionResult> Add(string phone)
+        {
+            var customer = await _customerService.GetByPhone(phone);
+            if (customer.IsSuccess)
+            {
+                await SetViewBag();
+                return View(new InsertCrmModel
+                {
+                    CustomerInfoModel = new CustomerInfoModel(customer.Data),
+                    ContactDate = string.Empty,
+                    ContactTime = string.Empty,
+                    Need = string.Empty,
+                    Description = string.Empty,
+                    Visit = -1,
+                    UserIds = null
+                });
+            }
+            else
+            {
+                return RedirectToAction("Add", "Customer", new { nextAction = "Crm"});
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add(InsertCrmModel customerModel)
+        {
+            return RedirectToAction("Index");
+            //return View(customerModel);
+        }
     }
 }
