@@ -125,8 +125,7 @@ function initTable() {
             { data: "date_created", visible: false },
             { data: "date_created", visible: false },
             { data: "date_created", visible: false },
-            { data: "date_created", visible: false },
-            { data: "id", width: 60 }
+            { data: "date_created", visible: false }
         ],
         columnDefs: [
             {
@@ -154,7 +153,7 @@ function initTable() {
                 searchable: true,
                 orderable: false,
                 render: function (data, type, row, meta) {
-                    return '<div style="padding:10px;"><div style="padding-top:10px;"><a href="/Crm/Update/'+row.id+'" style="font-weight:800;">' + row.code + '</a></div></div>';
+                    return '<div style="padding:10px;"><div style="padding-top:10px;"><a href="/Crm/Detail/'+row.id+'" style="font-weight:800;">' + row.code + '</a></div></div>';
                 }
             }, {
                 targets: 3,
@@ -322,16 +321,6 @@ function initTable() {
                 orderable: false,
                 render: function (data, type, row, meta) {
                     return '<div style="text-align:center;">' + moment(data).format('DD-MM-YYYY hh:mm') + '</div>';
-                }
-            },{
-                targets: 22,
-                data: 'id',
-                orderable: false,
-                className: 'tdButton',
-                render: function (data, type, row, meta) {
-                    return '<div style="display:flex;"><a class="btn btn-primary" href="/Crm/Edit/' +
-                        data +
-                        '"><i class="zmdi zmdi-edit"></i></a></div>';
                 }
             }
         ],
