@@ -172,20 +172,22 @@ namespace Pelo.Web.Controllers
                 var customer = await _customerService.GetByPhone(model.PhoneNumber);
                 if (customer.IsSuccess)
                 {
-                    return RedirectToAction("Index",
-                                            model.NextAction);
+                    return RedirectToAction("CustomerInfo", model.NextAction, new { phone = model.PhoneNumber });
                 }
-                ModelState.AddModelError("", customer.Message);
+                else
+                {
+                    return RedirectToAction("Add", model.NextAction, new { phone = model.PhoneNumber });
+                }
             }
 
             return View(model);
         }
 
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(string nextAction)
         {
             var customerGroups = await GetAllCustomerGroups();
             ViewBag.CustomerGroups = customerGroups.Item1.ToList();
-            return View(new InsertCustomerModel());
+            return View(new InsertCustomerModel { NextAction = nextAction });
         }
 
         [HttpPost]

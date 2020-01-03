@@ -1,0 +1,252 @@
+﻿@using Newtonsoft.Json
+@using Pelo.Common.Dtos.User
+@using Pelo.Common.Dtos.CrmPriority
+@using Pelo.Common.Dtos.CustomerSource
+@using Pelo.Common.Dtos.ProductGroup
+@using Pelo.Common.Dtos.CrmType
+@model Pelo.Web.Models.Crm.InsertCrmModel
+
+@{
+    ViewData["Title"] = "Tạo cơ hội bán hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .label-title {
+        /*font-weight:600;*/
+        font-size: 15px;
+    }
+
+    .label-content {
+        font-size: 15px;
+        color: #666EE8;
+        padding-left: 5px;
+    }
+</style>
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Thêm khách hàng</h4>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index")">
+                    Danh sách CRM
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Thêm cơ hội bán hàng</li>
+        </ol>
+        <div class=" row col-md-12 form-group">
+            <h3>THÔNG TIN KHÁCH HÀNG</h3>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-4">
+                <label class="label-title col-form-label"><strong>Mã khách hàng: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.Code</label>
+            </div>
+            <div class="col-lg-5">
+                <label class="label-title col-form-label"><strong>Nhóm khách hàng: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.CustomerGroup</label>
+            </div>
+            <div class="col-lg-3">
+                <label class="label-title col-form-label"><strong>Mức độ thân thiết: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.CustomerVip</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-4">
+                <label class="label-title col-form-label"><strong> Tên khách hàng: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.Name</label>
+            </div>
+            <div class="col-lg-5">
+                <label class="label-title col-form-label"><strong> Số điện thoại 1: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.Phone</label>
+            </div>
+            <div class="col-lg-3">
+                <label class="label-title col-form-label"><strong> Số điện thoại 2: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.Phone2</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-5">
+                <label class="label-title col-form-label"><strong> Địa chỉ: </strong></label>
+                <label class="label-content col-form-label">@Model.CustomerInfoModel.Address</label>
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.CustomerInfoModel.Ward) || !string.IsNullOrEmpty(Model.CustomerInfoModel.Ward) || !string.IsNullOrEmpty(Model.CustomerInfoModel.Ward))
+        {
+            <div class="row form-group">
+                <div class="col-lg-2">
+                    <label class="label-title col-form-label"><strong> Tỉnh: </strong></label>
+                    <label class="label-content col-form-label">@Model.CustomerInfoModel.Province</label>
+                </div>
+                <div class="col-lg-2">
+                    <label class="label-title col-form-label"><strong> Quận/huyện: </strong></label>
+                    <label class="label-content col-form-label">@Model.CustomerInfoModel.District</label>
+                </div>
+                <div class="col-lg-2">
+                    <label class="label-title col-form-label"><strong> Phường/xã: </strong></label>
+                    <label class="label-content col-form-label">@Model.CustomerInfoModel.Ward</label>
+                </div>
+            </div>
+        }
+        <form class="row" method="post">
+            <div class="col-md-12">
+                <h3>Tạo cơ hội bán hàng</h3>
+                @Html.ValidationSummary()
+                @Html.HiddenFor(c => c.Code)
+                @Html.HiddenFor(c => c.CustomerId)
+            </div>
+            <div class="col-6">
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.Need,
+                                     new
+                                          {
+                                                 @class = "form-control",
+                                                 @autocomplete = "none"
+                                         })
+                    <label>Nhu cầu</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Need)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextAreaFor(c => c.Description,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Ghi chú</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Description)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.ContactDate,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Ngày liên hệ</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.ContactDate)
+                </div>
+                <div class="form-group form-group--float">
+                    @Html.TextBoxFor(c => c.ContactTime,
+                                     new
+                                     {
+                                             @class = "form-control",
+                                             @autocomplete = "none"
+                                     })
+                    <label>Giờ liên hệ:</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.ContactTime)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" multiple id="UserIds" name="UserIds">
+                        @{
+                            var users = ViewBag.UserCares as List<UserDisplaySimpleModel>;
+                            if (users != null)
+                            {
+                                foreach (var user in users)
+                                {
+                                    <option value="@user.Id">@user.DisplayName</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Người phụ trách</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.UserIds)
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="CrmPriorityId" name="CrmPriorityId">
+                        @{
+                            var priotities = ViewBag.CrmPriorities as List<CrmPrioritySimpleModel>;
+                            if (priotities != null)
+                            {
+                                foreach (var item in priotities)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Mức độ khẩn cấp</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.CrmPriorityId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="CustomerSourceId" name="CustomerSourceId">
+                        @{
+                            var datas = ViewBag.CustomerSources as List<CustomerSourceSimpleModel>;
+                            if (datas != null)
+                            {
+                                foreach (var item in datas)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Nguồn khách hàng</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.CustomerSourceId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="ProductGroupId" name="ProductGroupId">
+                        @{
+                            var product = ViewBag.ProductGroups as List<ProductGroupSimpleModel>;
+                            if (product != null)
+                            {
+                                foreach (var item in product)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Nhóm sản phẩm</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.ProductGroupId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="CrmTypeId" name="CrmTypeId">
+                        @{
+                            var crmType = ViewBag.CrmTypes as List<CrmTypeSimpleModel>;
+                            if (crmType != null)
+                            {
+                                foreach (var item in crmType)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Kiểu chốt</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.CrmTypeId)
+                </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="Visit" name="Visit">
+                        <option value="-1">Tất cả</option>
+                        <option value="0">Chưa đến</option>
+                        <option value="1">Đã đến</option>
+                    </select>
+                    <label>Đến cửa hàng</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Visit)
+                </div>
+            </div>
+            <div class="col-12 cmd-center">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a class="btn btn-secondary" href="@Url.Action("Index")">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section js{
+
+}
+

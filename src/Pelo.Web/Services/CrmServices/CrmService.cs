@@ -14,6 +14,10 @@ namespace Pelo.Web.Services.CrmServices
     public interface ICrmService
     {
         Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetByPaging(DatatableRequest request);
+
+        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetCustomerCrmByPaging(DatatableRequest request);
+
+        Task<TResponse<bool>> Insert(InsertCrmRequest request);
     }
 
     public class CrmService : BaseService,
@@ -52,8 +56,8 @@ namespace Pelo.Web.Services.CrmServices
                 int userCareId = 0;
                 string need = string.Empty;
 
-                if(request?.Columns != null)
-                    if(request.Columns.Any())
+                if (request?.Columns != null)
+                    if (request.Columns.Any())
                     {
                         code = request.Columns[0]
                                       .Search?.Value ?? string.Empty;
@@ -101,67 +105,67 @@ namespace Pelo.Web.Services.CrmServices
                         need = request.Columns[21]
                                       .Search?.Value ?? string.Empty;
 
-                        if(!string.IsNullOrEmpty(province))
+                        if (!string.IsNullOrEmpty(province))
                         {
                             int.TryParse(province,
                                          out provinceId);
                         }
 
-                        if(!string.IsNullOrEmpty(district))
+                        if (!string.IsNullOrEmpty(district))
                         {
                             int.TryParse(district,
                                          out districtId);
                         }
 
-                        if(!string.IsNullOrEmpty(ward))
+                        if (!string.IsNullOrEmpty(ward))
                         {
                             int.TryParse(ward,
                                          out wardId);
                         }
 
-                        if(!string.IsNullOrEmpty(customerGroup))
+                        if (!string.IsNullOrEmpty(customerGroup))
                         {
                             int.TryParse(customerGroup,
                                          out customerGroupId);
                         }
 
-                        if(!string.IsNullOrEmpty(customerVip))
+                        if (!string.IsNullOrEmpty(customerVip))
                         {
                             int.TryParse(customerVip,
                                          out customerVipId);
                         }
 
-                        if(!string.IsNullOrEmpty(customerSource))
+                        if (!string.IsNullOrEmpty(customerSource))
                         {
                             int.TryParse(customerSource,
                                          out customerSourceId);
                         }
 
-                        if(!string.IsNullOrEmpty(productGroup))
+                        if (!string.IsNullOrEmpty(productGroup))
                         {
                             int.TryParse(productGroup,
                                          out productGroupId);
                         }
 
-                        if(!string.IsNullOrEmpty(crmStatus))
+                        if (!string.IsNullOrEmpty(crmStatus))
                         {
                             int.TryParse(crmStatus,
                                          out crmStatusId);
                         }
 
-                        if(!string.IsNullOrEmpty(crmType))
+                        if (!string.IsNullOrEmpty(crmType))
                         {
                             int.TryParse(crmType,
                                          out crmTypeId);
                         }
 
-                        if(!string.IsNullOrEmpty(crmPriority))
+                        if (!string.IsNullOrEmpty(crmPriority))
                         {
                             int.TryParse(crmPriority,
                                          out crmPriorityId);
                         }
 
-                        if(!string.IsNullOrEmpty(sVisit))
+                        if (!string.IsNullOrEmpty(sVisit))
                         {
                             int.TryParse(sVisit,
                                          out visit);
@@ -169,40 +173,40 @@ namespace Pelo.Web.Services.CrmServices
 
                         DateTime tmpDate;
 
-                        if(!string.IsNullOrEmpty(fromContactDate))
+                        if (!string.IsNullOrEmpty(fromContactDate))
                         {
-                            if(DateTime.TryParse(fromContactDate,
+                            if (DateTime.TryParse(fromContactDate,
                                                  out tmpDate))
                             {
                                 fromDate = tmpDate;
                             }
                         }
 
-                        if(!string.IsNullOrEmpty(toContactDate))
+                        if (!string.IsNullOrEmpty(toContactDate))
                         {
-                            if(DateTime.TryParse(toContactDate,
+                            if (DateTime.TryParse(toContactDate,
                                                  out tmpDate))
                             {
                                 toDate = tmpDate;
                             }
                         }
 
-                        if(!string.IsNullOrEmpty(userCreated))
+                        if (!string.IsNullOrEmpty(userCreated))
                         {
                             int.TryParse(userCreated,
                                          out userCreatedId);
                         }
 
-                        if(!string.IsNullOrEmpty(sDateCreated))
+                        if (!string.IsNullOrEmpty(sDateCreated))
                         {
-                            if(DateTime.TryParse(sDateCreated,
+                            if (DateTime.TryParse(sDateCreated,
                                                  out tmpDate))
                             {
                                 dateCreated = tmpDate;
                             }
                         }
 
-                        if(!string.IsNullOrEmpty(userCare))
+                        if (!string.IsNullOrEmpty(userCare))
                         {
                             int.TryParse(userCare,
                                          out userCareId);
@@ -211,7 +215,7 @@ namespace Pelo.Web.Services.CrmServices
 
                 var start = 1;
 
-                if(request != null) start = request.Start / request.Length + 1;
+                if (request != null) start = request.Start / request.Length + 1;
 
                 var url = string.Format(ApiUrl.CRM_GET_BY_PAGING,
                                         code,
@@ -244,14 +248,14 @@ namespace Pelo.Web.Services.CrmServices
                                                                                         HttpMethod.Get,
                                                                                         true);
 
-                if(response.IsSuccess)
+                if (response.IsSuccess)
                     return await Ok(new DatatableResponse<GetCrmPagingResponse>
-                                    {
-                                            Draw = request?.Draw ?? 1,
-                                            RecordsFiltered = response.Data.TotalCount,
-                                            RecordsTotal = response.Data.TotalCount,
-                                            Data = response.Data.Data.ToList()
-                                    });
+                    {
+                        Draw = request?.Draw ?? 1,
+                        RecordsFiltered = response.Data.TotalCount,
+                        RecordsTotal = response.Data.TotalCount,
+                        Data = response.Data.Data.ToList()
+                    });
 
                 return await Fail<DatatableResponse<GetCrmPagingResponse>>(response.Message);
             }
@@ -261,6 +265,74 @@ namespace Pelo.Web.Services.CrmServices
             }
         }
 
+        public async Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetCustomerCrmByPaging(DatatableRequest request)
+        {
+            try
+            {
+                var customerId = 0;
+
+                if (request?.Columns != null)
+                    if (request.Columns.Any())
+                    {
+                        if (!string.IsNullOrEmpty(request.Columns[0].Search?.Value ?? string.Empty))
+                        {
+                            int.TryParse(request.Columns[0].Search.Value,
+                                         out customerId);
+                        }
+                    }
+
+                var start = 1;
+
+                if (request != null) start = request.Start / request.Length + 1;
+
+                var url = string.Format(ApiUrl.CRM_GET_CRM_CUSTOMER_BY_PAGING,
+                                        customerId,
+                                        start,
+                                        request?.Length ?? 10);
+
+                var response = await HttpService.Send<PageResult<GetCrmPagingResponse>>(url,
+                                                                                        null,
+                                                                                        HttpMethod.Get,
+                                                                                        true);
+
+                if (response.IsSuccess)
+                    return await Ok(new DatatableResponse<GetCrmPagingResponse>
+                    {
+                        Draw = request?.Draw ?? 1,
+                        RecordsFiltered = response.Data.TotalCount,
+                        RecordsTotal = response.Data.TotalCount,
+                        Data = response.Data.Data.ToList()
+                    });
+
+                return await Fail<DatatableResponse<GetCrmPagingResponse>>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<DatatableResponse<GetCrmPagingResponse>>(exception);
+            }
+        }
+
+        public async Task<TResponse<bool>> Insert(InsertCrmRequest request)
+        {
+            try
+            {
+                var url = ApiUrl.CRM_INSERT;
+                var response = await HttpService.Send<bool>(url,
+                                                            request,
+                                                            HttpMethod.Post,
+                                                            true);
+                if (response.IsSuccess)
+                {
+                    return await Ok(true);
+                }
+
+                return await Fail<bool>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<bool>(exception);
+            }
+        }
         #endregion
     }
 }
