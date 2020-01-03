@@ -1,8 +1,4 @@
 ﻿using Pelo.Common.Dtos.Customer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Pelo.Web.Models.Customer
 {
@@ -24,11 +20,12 @@ namespace Pelo.Web.Models.Customer
             Address = model.Address;
             Description = model.Description;
         }
+
         public int Id { get; set; }
 
         public string Code { get; set; }
 
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
         public string CustomerGroup { get; set; }
 

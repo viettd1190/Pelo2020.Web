@@ -408,9 +408,10 @@ namespace Pelo.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Add", "Customer", new { nextAction = "Crm"});
+                return RedirectToAction("Add", "Customer", new { nextAction = "Crm" });
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Add(InsertCrmModel customerModel)
         {

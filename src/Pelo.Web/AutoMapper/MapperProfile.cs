@@ -64,6 +64,8 @@ namespace Pelo.Web.AutoMapper
 
             CreateMap<InsertCustomerRequest, InsertCustomerModel>()
                     .ReverseMap();
+            CreateMap<GetCustomerDetailResponse, CustomerDetailModel>()
+                    .ReverseMap();
 
             #endregion
         }
