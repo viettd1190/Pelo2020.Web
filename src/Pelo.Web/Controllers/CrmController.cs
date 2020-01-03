@@ -441,13 +441,12 @@ namespace Pelo.Web.Controllers
             }
             return View(model);
         }
-        public async Task<IActionResult> CustomerInfo(string phone)
+        public async Task<IActionResult> Info(string phone)
         {
             var customer = await _customerService.GetByPhone(phone);
             if (customer.IsSuccess)
             {
-                //return View(new CustomerInfoModel(customer.Data));
-                return View(new CustomerInfoModel());
+                return View(new CustomerInfoModel(customer.Data));
             }
             else
             {
