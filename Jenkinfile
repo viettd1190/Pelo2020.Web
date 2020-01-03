@@ -1,0 +1,72 @@
+node{
+    
+	try{
+		stage('Checkout git repo') {
+		    currentBuild.result='SUCCESS'
+			git branch: 'dev', url: 'https://github.com/viettd1190/Pelo2020.Web.git'   
+        }
+	} catch (e) {
+		env.error="Failed at step Checkout git repo"
+		env.color="danger"
+        currentBuild.result = 'FAILURE'
+	}
+	
+	try{
+		stage('offline website'){
+			sh(script:"cp C:/Websites/app_offline.htm C:/inetpub/wwwroot")
+        }
+	} catch (e) {
+		env.error="Failed at step Offline Website"
+		env.color="danger"
+        currentBuild.result = 'FAILURE'        
+	}
+	
+	try{
+		stage('build and publish') {
+		    def dotnet="C:/dotnet/dotnet.exe";
+			sh(script: "${dotnet} publish src/Pelo.Web.sln -c Release -o C:/inetpub/wwwroot", returnStdout: true)
+        }
+	} catch (e) {
+		env.error="Failed at step Build and publish"
+		env.color="danger"
+        currentBuild.result = 'FAILURE'
+	}
+	try{
+		stage('online website'){
+			sh(script:"rm C:/inetpub/wwwroot/app_offline.htm")
+        }
+	} catch (e) {
+		env.error="Failed at step Online website"
+		env.color="danger"
+        currentBuild.result = 'FAILURE'
+	}
+	
+	stage('Send email') {
+        def mailRecipients = "viettd1190@gmail.com;"
+        def jobName = currentBuild.fullDisplayName
+        currentBuild.description=sh(returnStdout: true, script: 'git log -n 1 --format="%s"').trim()
+        emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+        subject: "[Jenkins] ${jobName} | ${env.error}",
+        to: "${mailRecipients}",
+        replyTo: "${mailRecipients}",
+        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+		
+		notifyBuild("${currentBuild.result}","${env.color}","\nAUTHOR: @${author()} <${RUN_CHANGES_DISPLAY_URL}|Changelog>\nBUILD DURATION: ${currentBuild.durationString}\nBRANCH: dev")
+    }
+}
+	
+	def notifyBuild(String buildStatus = 'STARTED', String colorCode = '#5492f7', String notify = '') {
+		def channel = "pelo"
+		def base = "https://github.com/viettd1190/Pelo2020.Web/commit/" 
+		def commit = sh(returnStdout: true, script: 'git log -n 1 --format="%H"').trim()
+		def link = "${base}${commit}" 
+		def shortCommit = commit.take(6)
+		def title = sh(returnStdout: true, script: 'git log -n 1 --format="%s"').trim()
+		def subject = "<${link}|${shortCommit}> ${title}" 
+		def summary = "${buildStatus}: Job <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} #${env.BUILD_NUMBER}>\n${subject} ${notify}"
+		slackSend (channel: "#pelo", color: colorCode, message: summary)
+}
+
+	def author() {
+		return sh(returnStdout: true, script: 'git log -n 1 --format="%an" | awk \'{print tolower($1);}\'').trim()
+	}
