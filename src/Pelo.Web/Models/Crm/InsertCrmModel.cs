@@ -31,8 +31,9 @@ namespace Pelo.Web.Models.Crm
           public int Visit { get; set; }
   
           public string UserIds { get; set; }
-  
-          public CustomerInfoModel CustomerInfoModel { get; set; }
+
+        public string Code { get; set; }
+        public CustomerInfoModel CustomerInfoModel { get; set; }
 
     }
 }

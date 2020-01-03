@@ -4,6 +4,7 @@ namespace Pelo.Web.Models.Customer
 {
     public class CustomerInfoModel
     {
+        public CustomerInfoModel() { }
         public CustomerInfoModel(CustomerByPhoneResponse model)
         {
             Id = model.Id;
@@ -19,6 +20,8 @@ namespace Pelo.Web.Models.Customer
             Ward = model.Ward;
             Address = model.Address;
             Description = model.Description;
+            UserCreated = model.UserCreated;
+            DateCreated = model.DateCreated.ToString("dd-MM-yyyy hh:mm");
         }
 
         public int Id { get; set; }
@@ -46,5 +49,9 @@ namespace Pelo.Web.Models.Customer
         public string Province { get; set; }
 
         public string Description { get; set; }
+
+        public string UserCreated { get; set; }
+
+        public string DateCreated { get; set; }
     }
 }

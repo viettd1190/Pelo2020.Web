@@ -15,6 +15,7 @@ using Pelo.Common.Dtos.CustomerSource;
 using Pelo.Common.Dtos.CustomerVip;
 using Pelo.Common.Dtos.ProductGroup;
 using Pelo.Common.Dtos.User;
+using Pelo.Common.Extensions;
 using Pelo.Web.Attributes;
 using Pelo.Web.Models.Crm;
 using Pelo.Web.Models.Customer;
@@ -403,7 +404,8 @@ namespace Pelo.Web.Controllers
                     Need = string.Empty,
                     Description = string.Empty,
                     Visit = -1,
-                    UserIds = null
+                    UserIds = null,
+                    CustomerId = customer.Data.Id,
                 });
             }
             else
@@ -413,10 +415,52 @@ namespace Pelo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(InsertCrmModel customerModel)
+        public async Task<IActionResult> Add(InsertCrmModel model)
         {
-            return RedirectToAction("Index");
-            //return View(customerModel);
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(model.ContactDate) && !string.IsNullOrEmpty(model.ContactTime))
+                {
+                    DateTime contactDate = DateTime.Parse($"{model.ContactDate} {model.ContactTime}");
+                    var result = _crmService.Insert(new InsertCrmRequest
+                    {
+                        Need = model.Need,
+                        CrmPriorityId = model.CrmPriorityId,
+                        CrmStatusId = model.CrmStatusId,
+                        CrmTypeId = model.CrmTypeId,
+                        CustomerId = model.CustomerId,
+                        CustomerSourceId = model.CustomerSourceId,
+                        Description = model.Description,
+                        ProductGroupId = model.ProductGroupId,
+                        Visit = model.Visit,
+                        ContactDate = contactDate,
+                        UserIds = Util.GetArrays(model.UserIds),
+                        Code = model.Code
+                    });
+                }
+            }
+            return View(model);
+        }
+        public async Task<IActionResult> CustomerInfo(string phone)
+        {
+            var customer = await _customerService.GetByPhone(phone);
+            if (customer.IsSuccess)
+            {
+                //return View(new CustomerInfoModel(customer.Data));
+                return View(new CustomerInfoModel());
+            }
+            else
+            {
+                return RedirectToAction("Add", "Customer", new { nextAction = "Crm" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetListByCustomer(DatatableRequest request)
+        {
+            var result = await _crmService.GetCustomerCrmByPaging(request);
+            if (result.IsSuccess) return Json(result.Data);
+            return Json(DatatableResponse<GetCrmPagingResponse>.Init(request.Draw));
         }
     }
 }

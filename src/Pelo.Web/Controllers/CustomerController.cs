@@ -181,18 +181,33 @@ namespace Pelo.Web.Controllers
                                             });
                 }
 
-                ModelState.AddModelError("",
-                                         customer.Message);
+                //ModelState.AddModelError("",
+                //                         customer.Message);
+
+                //return RedirectToAction("CustomerInfo",
+                //                        model.NextAction,
+                //                        new
+                //                        {
+                //                                phone = model.PhoneNumber
+                //                        });
             }
 
-            return View(model);
+            return RedirectToAction("Add",
+                                    "Customer",
+                                    new
+                                    {
+                                            nextAction = model.NextAction
+                                    });
         }
 
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(string nextAction)
         {
             var customerGroups = await GetAllCustomerGroups();
             ViewBag.CustomerGroups = customerGroups.Item1.ToList();
-            return View(new InsertCustomerModel());
+            return View(new InsertCustomerModel
+                        {
+                                NextAction = nextAction
+                        });
         }
 
         [HttpPost]
@@ -226,7 +241,8 @@ namespace Pelo.Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Detail(int id,string nextAction)
+        public async Task<IActionResult> Detail(int id,
+                                                string nextAction)
         {
             var customer = await _customerService.GetDetail(id);
             if(customer.IsSuccess)
