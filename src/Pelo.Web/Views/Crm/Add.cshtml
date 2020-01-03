@@ -122,8 +122,9 @@
                     @Html.TextBoxFor(c => c.ContactDate,
                                      new
                                      {
-                                             @class = "form-control",
-                                             @autocomplete = "none"
+                                         @class = "form-control",
+                                         @autocomplete = "none",
+                                         @id = "datepicker"
                                      })
                     <label>Ngày liên hệ</label>
                     <i class="form-group__bar"></i>
@@ -133,8 +134,9 @@
                     @Html.TextBoxFor(c => c.ContactTime,
                                      new
                                      {
-                                             @class = "form-control",
-                                             @autocomplete = "none"
+                                         @class = "form-control",
+                                         @autocomplete = "none",
+                                         @id= "timepicker"
                                      })
                     <label>Giờ liên hệ:</label>
                     <i class="form-group__bar"></i>
@@ -245,8 +247,15 @@
         </form>
     </div>
 </div>
-
+@section css{
+    <link rel="stylesheet" href="~/vendors/datetimepicker/jquery.datetimepicker.min.css">
+}
 @section js{
-
+    <script src="~/vendors/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datetimepicker({ formatDate: 'dd-MM-yyyy', lang: 'vi', timepicker: false });
+        });
+    </script>
 }
 

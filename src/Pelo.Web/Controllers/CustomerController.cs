@@ -26,9 +26,9 @@ namespace Pelo.Web.Controllers
 
         private readonly ICustomerVipService _customerVipService;
 
-        private IProvinceService _provinceService;
-
         readonly IMapper _mapper;
+
+        private readonly IProvinceService _provinceService;
 
         public CustomerController(ICustomerService customerService,
                                   ICustomerGroupService customerGroupService,
@@ -172,22 +172,42 @@ namespace Pelo.Web.Controllers
                 var customer = await _customerService.GetByPhone(model.PhoneNumber);
                 if (customer.IsSuccess)
                 {
-                    return RedirectToAction("Info", model.NextAction, new { phone = model.PhoneNumber });
+                    return RedirectToAction("Detail",
+                                            "Customer",
+                                            new
+                                            {
+                                                id = customer.Data.Id,
+                                                nextAction = model.NextAction
+                                            });
                 }
-                else
-                {
-                    return RedirectToAction("Add", model.NextAction, new { phone = model.PhoneNumber });
-                }
+
+                //ModelState.AddModelError("",
+                //                         customer.Message);
+
+                //return RedirectToAction("CustomerInfo",
+                //                        model.NextAction,
+                //                        new
+                //                        {
+                //                                phone = model.PhoneNumber
+                //                        });
             }
 
-            return View(model);
+            return RedirectToAction("Add",
+                                    "Customer",
+                                    new
+                                    {
+                                        nextAction = model.NextAction
+                                    });
         }
 
         public async Task<IActionResult> Add(string nextAction)
         {
             var customerGroups = await GetAllCustomerGroups();
             ViewBag.CustomerGroups = customerGroups.Item1.ToList();
-            return View(new InsertCustomerModel { NextAction = nextAction });
+            return View(new InsertCustomerModel
+            {
+                NextAction = nextAction
+            });
         }
 
         [HttpPost]
@@ -203,10 +223,13 @@ namespace Pelo.Web.Controllers
                     {
                         return RedirectToAction("Index");
                     }
-                    else
-                    {
-                        return RedirectToAction("Add", model.NextAction, new { phone = model.Phone });
-                    }
+
+                    return RedirectToAction("Add",
+                                            model.NextAction,
+                                            new
+                                            {
+                                                phone = model.Phone
+                                            });
                 }
 
                 ModelState.AddModelError("",
@@ -218,12 +241,15 @@ namespace Pelo.Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Detail(int id)
+        public async Task<IActionResult> Detail(int id,
+                                                string nextAction)
         {
             var customer = await _customerService.GetDetail(id);
             if (customer.IsSuccess)
             {
-                return View(customer.Data);
+                var model = _mapper.Map<CustomerDetailModel>(customer.Data);
+                model.NextAction = nextAction;
+                return View(model);
             }
 
             return View("Notfound");
