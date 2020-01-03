@@ -172,7 +172,7 @@ namespace Pelo.Web.Controllers
                 var customer = await _customerService.GetByPhone(model.PhoneNumber);
                 if (customer.IsSuccess)
                 {
-                    return RedirectToAction("CustomerInfo", model.NextAction, new { phone = model.PhoneNumber });
+                    return RedirectToAction("Info", model.NextAction, new { phone = model.PhoneNumber });
                 }
                 else
                 {
