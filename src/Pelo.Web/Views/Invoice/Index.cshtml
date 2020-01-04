@@ -1,0 +1,214 @@
+﻿@using Pelo.Common.Dtos.Branch
+@using Pelo.Common.Dtos.InvoiceStatus
+@using Pelo.Common.Dtos.User
+@model object
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "_Layout";
+}
+
+@section cssPlugin{
+    <link rel="stylesheet" href="~/vendors/flatpickr/flatpickr.min.css" />
+}
+
+<div class="card">
+    <div class="card-body" id="accordion">
+        <h4 class="card-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                Danh sách đơn hàng
+            </a>
+        </h4>
+        <div class="row panel-collapse collapse in" id="collapse1">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtCustomerName" placeholder="Tên khách hàng">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtCustomerPhone" placeholder="SĐT khách hàng">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtCustomerCode" placeholder="Mã khách hàng">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtCode" placeholder="Mã đơn hàng">
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtBranch">
+                        <option value="0">--Tất cả chi nhánh--</option>
+                        @{
+                            var branches = ViewBag.Branches as List<BranchSimpleModel>;
+                            if (branches != null)
+                            {
+                                foreach (var branch in branches)
+                                {
+                                    <option value="@branch.Id">@branch.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select class="form-control select2" id="txtCustomerVip">
+                        <option value="0">--Tất cả trạng thái--</option>
+                        @{
+                            var invoiceStatuses = ViewBag.InvoiceStatuses as List<InvoiceStatusSimpleModel>;
+                            if (invoiceStatuses != null)
+                            {
+                                foreach (var invoiceStatus in invoiceStatuses)
+                                {
+                                    <option value="@invoiceStatus.Id">@invoiceStatus.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            @{
+                var isDefaultInvoiceRole = (bool)ViewBag.IsDefaultInvoiceRole;
+                if (isDefaultInvoiceRole)
+                {
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select class="form-control select2" id="txtUserCreated">
+                                <option value="0">--Tất cả người lên đơn--</option>
+                                @{
+                                    var userCreateds = ViewBag.UserCreated as List<UserDisplaySimpleModel>;
+                                    if (userCreateds != null)
+                                    {
+                                        foreach (var userCreated in userCreateds)
+                                        {
+                                            <option value="@userCreated.Id">@userCreated.DisplayName</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <i class="form-group__bar"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select class="form-control select2" id="txtUserSell">
+                                <option value="0">--Tất cả người lên đơn--</option>
+                                @{
+                                    var userSells = ViewBag.UserCreated as List<UserDisplaySimpleModel>;
+                                    if (userSells != null)
+                                    {
+                                        foreach (var userSell in userSells)
+                                        {
+                                            <option value="@userSell.Id">@userSell.DisplayName</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <i class="form-group__bar"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select class="form-control select2" id="txtUserDelivery">
+                                <option value="0">--Tất cả người giao--</option>
+                                @{
+                                    var userDeliveries = ViewBag.UserCreated as List<UserDisplaySimpleModel>;
+                                    if (userDeliveries != null)
+                                    {
+                                        foreach (var userDelivery in userDeliveries)
+                                        {
+                                            <option value="@userDelivery.Id">@userDelivery.DisplayName</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <i class="form-group__bar"></i>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" id="txtUserCreated" value="@ViewBag.UserId" />
+                    <input type="hidden" id="txtUserSell" value="@ViewBag.UserId" />
+                    <input type="hidden" id="txtUserDelivery" value="@ViewBag.UserId" />
+                }
+            }
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="zmdi zmdi-calendar"></i></span>
+                        </div>
+                        <input type="date" class="form-control hidden-md-up" placeholder="Từ ngày">
+                        <input type="text" id="txtFromDate" class="form-control date-picker hidden-sm-down flatpickr-input active" placeholder="Từ ngày" readonly="readonly">
+                    </div>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="zmdi zmdi-calendar"></i></span>
+                        </div>
+                        <input type="date" class="form-control hidden-md-up" placeholder="Đến ngày">
+                        <input type="text" id="txtToDate" class="form-control date-picker hidden-sm-down flatpickr-input active" placeholder="Đến ngày" readonly="readonly">
+                    </div>
+                    <i class="form-group__bar"></i>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <a class="btn btn-primary" href="javascript:reloadData();">Tìm kiếm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tblInvoices2" class="table table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th></th>
+                        <th>Trạng thái</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Khách hàng</th>
+                        <th>Sản phẩm</th>
+                        <th>Chi nhánh</th>
+                        <th>Ngày giao</th>
+                        <th>Ngày tạo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <button class="btn btn-success btn--action" onclick="window.location.href='/Customer/FindByPhoneNumber?nextAction=Invoice'"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+
+@section js{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="~/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendors/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/vendors/flatpickr/flatpickr.min.js"></script>
+    <script src="~/js/pages/invoice/index.js"></script>
+}
+

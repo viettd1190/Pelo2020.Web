@@ -44,6 +44,8 @@
 
         public const string USER_IS_DEFAULT_CRM = BASE_API_URL + "/api/user/crm_default";
 
+        public const string USER_IS_DEFAULT_INVOICE = BASE_API_URL + "/api/user/invoice_default";
+
         #endregion
 
         #region AppConfig
@@ -157,6 +159,12 @@
         public const string DISTRICT_GET_ALL = BASE_API_URL + "/api/district/{0}/all";
 
         public const string WARD_GET_ALL = BASE_API_URL + "/api/ward/{0}/all";
+
+        #endregion
+
+        #region InvoiceStatus
+
+        public const string INVOICE_STATUS_GET_ALL = BASE_API_URL + "/api/invoice_status/all";
 
         #endregion
     }

@@ -27,6 +27,8 @@ namespace Pelo.Web.Services.UserServices
         Task<TResponse<IEnumerable<UserDisplaySimpleModel>>> GetAll();
 
         Task<TResponse<bool>> IsBelongDefaultCrmRole();
+
+        Task<TResponse<bool>> IsBelongDefaultInvoiceRole();
     }
 
     public class UserService : BaseService,
@@ -246,7 +248,29 @@ namespace Pelo.Web.Services.UserServices
                                                             null,
                                                             HttpMethod.Get,
                                                             true);
-                if (response.IsSuccess)
+                if(response.IsSuccess)
+                {
+                    return await Ok(response.Data);
+                }
+
+                return await Fail<bool>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<bool>(exception);
+            }
+        }
+
+        public async Task<TResponse<bool>> IsBelongDefaultInvoiceRole()
+        {
+            try
+            {
+                var url = ApiUrl.USER_IS_DEFAULT_INVOICE;
+                var response = await HttpService.Send<bool>(url,
+                                                            null,
+                                                            HttpMethod.Get,
+                                                            true);
+                if(response.IsSuccess)
                 {
                     return await Ok(response.Data);
                 }
