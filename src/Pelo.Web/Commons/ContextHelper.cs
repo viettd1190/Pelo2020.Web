@@ -24,7 +24,7 @@ namespace Pelo.Web.Commons
                 return string.Empty;
             }
 
-            return ((ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity).Claims.ToList()[3]
+            return ((ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity).Claims.ToList()[4]
                 .Value;
         }
 

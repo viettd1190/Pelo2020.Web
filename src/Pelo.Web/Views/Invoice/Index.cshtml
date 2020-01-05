@@ -89,7 +89,7 @@
                             <select class="form-control select2" id="txtUserCreated">
                                 <option value="0">--Tất cả người lên đơn--</option>
                                 @{
-                                    var userCreateds = ViewBag.UserCreated as List<UserDisplaySimpleModel>;
+                                    var userCreateds = ViewBag.UserCreateds as List<UserDisplaySimpleModel>;
                                     if (userCreateds != null)
                                     {
                                         foreach (var userCreated in userCreateds)
@@ -107,7 +107,7 @@
                             <select class="form-control select2" id="txtUserSell">
                                 <option value="0">--Tất cả người lên đơn--</option>
                                 @{
-                                    var userSells = ViewBag.UserCreated as List<UserDisplaySimpleModel>;
+                                    var userSells = ViewBag.UserCreateds as List<UserDisplaySimpleModel>;
                                     if (userSells != null)
                                     {
                                         foreach (var userSell in userSells)
@@ -125,7 +125,7 @@
                             <select class="form-control select2" id="txtUserDelivery">
                                 <option value="0">--Tất cả người giao--</option>
                                 @{
-                                    var userDeliveries = ViewBag.UserCreated as List<UserDisplaySimpleModel>;
+                                    var userDeliveries = ViewBag.UserCreateds as List<UserDisplaySimpleModel>;
                                     if (userDeliveries != null)
                                     {
                                         foreach (var userDelivery in userDeliveries)
