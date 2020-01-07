@@ -1,5 +1,6 @@
 ﻿var table = null;
 var crmCounter = 0;
+var invoice = 0;
 $(document).ready(function () {
     addActiveClass('mnuCustomer');
     initTableCrm();
@@ -404,7 +405,7 @@ function initTableInvoice() {
                 data: 'id',
                 orderable: false,
                 render: function (data, type, row, meta) {
-                    updateCrmCounter();
+                    updateInvoiceCounter();
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             }, {
@@ -521,4 +522,8 @@ function initTableInvoice() {
         ],
         order: [[8, 'desc']]
     });
+}
+function updateInvoiceCounter() {
+    invoice++;
+    $('#invoiceCount').html('('+invoice+')');
 }
