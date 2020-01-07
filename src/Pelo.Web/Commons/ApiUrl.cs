@@ -3,6 +3,7 @@
     public class ApiUrl
     {
         public const string BASE_API_URL = "http://103.77.167.96:20001";
+        //public const string BASE_API_URL = "http://localhost:49577";
 
         #region Account
 
@@ -169,5 +170,12 @@
         public const string INVOICE_STATUS_GET_ALL = BASE_API_URL + "/api/invoice_status/all";
 
         #endregion
+
+        #region Invoice
+
+        public const string INVOICE_GET_BY_PAGING = BASE_API_URL + "/api/invoice?customer_code={0}&customer_phone={1}&customer_name={2}&code={3}&branch_id={4}&invoice_status_id={5}&user_created_id={6}&user_sell_id={7}&user_delivery_id={8}&from_date={9}&to_date={10}&page={11}&page_size={12}";
+
+        #endregion
+
     }
 }
