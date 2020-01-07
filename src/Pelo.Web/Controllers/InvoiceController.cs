@@ -6,9 +6,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Pelo.Common.Dtos.Branch;
+using Pelo.Common.Dtos.Invoice;
 using Pelo.Common.Dtos.InvoiceStatus;
 using Pelo.Common.Dtos.User;
 using Pelo.Web.Attributes;
+using Pelo.Web.Models.Datatables;
 using Pelo.Web.Services.InvoiceServices;
 using Pelo.Web.Services.MasterServices;
 using Pelo.Web.Services.UserServices;
@@ -26,15 +28,19 @@ namespace Pelo.Web.Controllers
 
         private readonly IUserService _userService;
 
+        private IInvoiceService _invoiceService;
+
         public InvoiceController(IInvoiceStatusService invoiceStatusService,
                                  IBranchService branchService,
                                  IUserService userService,
+                                 IInvoiceService invoiceService,
                                  IMapper mapper,
                                  ILogger<InvoiceController> logger) : base(logger)
         {
             _invoiceStatusService = invoiceStatusService;
             _branchService = branchService;
             _userService = userService;
+            _invoiceService = invoiceService;
             _mapper = mapper;
         }
 
@@ -151,6 +157,15 @@ namespace Pelo.Web.Controllers
             await SetViewBag();
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetList(DatatableRequest request)
+        {
+            var result = await _invoiceService.GetByPaging(request);
+            if (result.IsSuccess) return Json(result.Data);
+
+            return Json(DatatableResponse<GetInvoicePagingResponse>.Init(request.Draw));
         }
     }
 }
