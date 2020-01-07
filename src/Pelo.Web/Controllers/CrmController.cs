@@ -438,7 +438,7 @@ namespace Pelo.Web.Controllers
                                                             Visit = model.Visit,
                                                             ContactDate = contactDate,
                                                             UserIds = Util.GetArrays(model.UserIds),
-                                                            Code = model.Code
+                                                            //Code = model.Code
                                                     });
                     if (result.IsSuccess)
                     {
