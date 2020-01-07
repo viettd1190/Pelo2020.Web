@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Pelo.Common.Dtos.Crm;
 using Pelo.Common.Dtos.Customer;
+using Pelo.Common.Dtos.Invoice;
 using Pelo.Common.Models;
 using Pelo.Web.Commons;
 using Pelo.Web.Models.Datatables;
@@ -26,6 +28,9 @@ namespace Pelo.Web.Services.CustomerServices
         Task<TResponse<bool>> Delete(int id);
 
         Task<TResponse<GetCustomerDetailResponse>> GetDetail(int id);
+
+        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetCustomerCrmByPaging(DatatableRequest request);
+        Task<TResponse<DatatableResponse<GetInvoicePagingResponse>>> GetCustomerInvoiceByPaging(DatatableRequest request);
     }
 
     public class CustomerService : BaseService,
@@ -298,6 +303,99 @@ namespace Pelo.Web.Services.CustomerServices
             }
         }
 
+        public async Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetCustomerCrmByPaging(DatatableRequest request)
+        {
+            try
+            {
+                var customerId = 0;
+
+                if (request?.Columns != null)
+                    if (request.Columns.Any())
+                    {
+                        if (!string.IsNullOrEmpty(request.Columns[0].Search?.Value ?? string.Empty))
+                        {
+                            int.TryParse(request.Columns[0].Search.Value,
+                                         out customerId);
+                        }
+                    }
+
+                var start = 1;
+
+                if (request != null) start = request.Start / request.Length + 1;
+
+                var url = string.Format(ApiUrl.CRM_GET_CRM_CUSTOMER_BY_PAGING,
+                                        customerId,
+                                        start,
+                                        request?.Length ?? 10);
+
+                var response = await HttpService.Send<PageResult<GetCrmPagingResponse>>(url,
+                                                                                        null,
+                                                                                        HttpMethod.Get,
+                                                                                        true);
+
+                if (response.IsSuccess)
+                    return await Ok(new DatatableResponse<GetCrmPagingResponse>
+                    {
+                        Draw = request?.Draw ?? 1,
+                        RecordsFiltered = response.Data.TotalCount,
+                        RecordsTotal = response.Data.TotalCount,
+                        Data = response.Data.Data.ToList()
+                    });
+
+                return await Fail<DatatableResponse<GetCrmPagingResponse>>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<DatatableResponse<GetCrmPagingResponse>>(exception);
+            }
+        }
+
+        public async Task<TResponse<DatatableResponse<GetInvoicePagingResponse>>> GetCustomerInvoiceByPaging(DatatableRequest request)
+        {
+            try
+            {
+                var customerId = 0;
+
+                if (request?.Columns != null)
+                    if (request.Columns.Any())
+                    {
+                        if (!string.IsNullOrEmpty(request.Columns[0].Search?.Value ?? string.Empty))
+                        {
+                            int.TryParse(request.Columns[0].Search.Value,
+                                         out customerId);
+                        }
+                    }
+
+                var start = 1;
+
+                if (request != null) start = request.Start / request.Length + 1;
+
+                var url = string.Format(ApiUrl.CRM_GET_INVOICE_CUSTOMER_BY_PAGING,
+                                        customerId,
+                                        start,
+                                        request?.Length ?? 10);
+
+                var response = await HttpService.Send<PageResult<GetInvoicePagingResponse>>(url,
+                                                                                        null,
+                                                                                        HttpMethod.Get,
+                                                                                        true);
+
+                if (response.IsSuccess)
+                    return await Ok(new DatatableResponse<GetInvoicePagingResponse>
+                    {
+                        Draw = request?.Draw ?? 1,
+                        RecordsFiltered = response.Data.TotalCount,
+                        RecordsTotal = response.Data.TotalCount,
+                        Data = response.Data.Data.ToList()
+                    });
+
+                return await Fail<DatatableResponse<GetInvoicePagingResponse>>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<DatatableResponse<GetInvoicePagingResponse>>(exception);
+            }
+        }
         #endregion
     }
 }

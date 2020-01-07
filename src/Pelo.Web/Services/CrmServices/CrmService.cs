@@ -13,9 +13,7 @@ namespace Pelo.Web.Services.CrmServices
 {
     public interface ICrmService
     {
-        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetByPaging(DatatableRequest request);
-
-        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetCustomerCrmByPaging(DatatableRequest request);
+        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetByPaging(DatatableRequest request);        
 
         Task<TResponse<bool>> Insert(InsertCrmRequest request);
     }
@@ -240,53 +238,6 @@ namespace Pelo.Web.Services.CrmServices
                                         dateCreated,
                                         userCareId,
                                         need,
-                                        start,
-                                        request?.Length ?? 10);
-
-                var response = await HttpService.Send<PageResult<GetCrmPagingResponse>>(url,
-                                                                                        null,
-                                                                                        HttpMethod.Get,
-                                                                                        true);
-
-                if (response.IsSuccess)
-                    return await Ok(new DatatableResponse<GetCrmPagingResponse>
-                    {
-                        Draw = request?.Draw ?? 1,
-                        RecordsFiltered = response.Data.TotalCount,
-                        RecordsTotal = response.Data.TotalCount,
-                        Data = response.Data.Data.ToList()
-                    });
-
-                return await Fail<DatatableResponse<GetCrmPagingResponse>>(response.Message);
-            }
-            catch (Exception exception)
-            {
-                return await Fail<DatatableResponse<GetCrmPagingResponse>>(exception);
-            }
-        }
-
-        public async Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetCustomerCrmByPaging(DatatableRequest request)
-        {
-            try
-            {
-                var customerId = 0;
-
-                if (request?.Columns != null)
-                    if (request.Columns.Any())
-                    {
-                        if (!string.IsNullOrEmpty(request.Columns[0].Search?.Value ?? string.Empty))
-                        {
-                            int.TryParse(request.Columns[0].Search.Value,
-                                         out customerId);
-                        }
-                    }
-
-                var start = 1;
-
-                if (request != null) start = request.Start / request.Length + 1;
-
-                var url = string.Format(ApiUrl.CRM_GET_CRM_CUSTOMER_BY_PAGING,
-                                        customerId,
                                         start,
                                         request?.Length ?? 10);
 

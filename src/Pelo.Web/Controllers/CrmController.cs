@@ -404,7 +404,8 @@ namespace Pelo.Web.Controllers
                                     Description = string.Empty,
                                     Visit = -1,
                                     UserIds = null,
-                                    CustomerId = customer.Data.Id
+                                    CustomerId = customer.Data.Id,
+                                    Phone = phone
                             });
             }
 
@@ -437,8 +438,7 @@ namespace Pelo.Web.Controllers
                                                             ProductGroupId = model.ProductGroupId,
                                                             Visit = model.Visit,
                                                             ContactDate = contactDate,
-                                                            UserIds = Util.GetArrays(model.UserIds),
-                                                            Code = model.Code
+                                                            UserIds = model.UserIds.ToList(),
                                                     });
                     if (result.IsSuccess)
                     {
@@ -451,7 +451,12 @@ namespace Pelo.Web.Controllers
                                              result.Message);
                 }
             }
-
+            var customer = await _customerService.GetByPhone(model.Phone);
+            if (customer.IsSuccess)
+            {
+                model.CustomerInfoModel = new CustomerInfoModel(customer.Data);
+            }
+            await SetViewBag();
             return View(model);
         }
 
@@ -471,13 +476,6 @@ namespace Pelo.Web.Controllers
                                             nextAction = "Crm"
                                     });
         }
-
-        [HttpPost]
-        public async Task<IActionResult> GetListByCustomer(DatatableRequest request)
-        {
-            var result = await _crmService.GetCustomerCrmByPaging(request);
-            if(result.IsSuccess) return Json(result.Data);
-            return Json(DatatableResponse<GetCrmPagingResponse>.Init(request.Draw));
-        }
+        
     }
 }

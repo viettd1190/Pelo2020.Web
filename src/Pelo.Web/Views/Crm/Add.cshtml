@@ -4,6 +4,7 @@
 @using Pelo.Common.Dtos.CustomerSource
 @using Pelo.Common.Dtos.ProductGroup
 @using Pelo.Common.Dtos.CrmType
+@using Pelo.Common.Dtos.CrmStatus
 @model Pelo.Web.Models.Crm.InsertCrmModel
 
 @{
@@ -35,7 +36,7 @@
             <li class="breadcrumb-item active">Thêm cơ hội bán hàng</li>
         </ol>
         <div class=" row col-md-12 form-group">
-            <h3>THÔNG TIN KHÁCH HÀNG</h3>
+            <h4 class="card-title">THÔNG TIN KHÁCH HÀNG</h4>
         </div>
         <div class="row form-group">
             <div class="col-lg-4">
@@ -71,23 +72,32 @@
                 <label class="label-content col-form-label">@Model.CustomerInfoModel.Address</label>
             </div>
         </div>
-        @if (!string.IsNullOrEmpty(Model.CustomerInfoModel.Ward) || !string.IsNullOrEmpty(Model.CustomerInfoModel.Ward) || !string.IsNullOrEmpty(Model.CustomerInfoModel.Ward))
-        {
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label-title col-form-label"><strong> Tỉnh: </strong></label>
-                    <label class="label-content col-form-label">@Model.CustomerInfoModel.Province</label>
+        @{
+            if (!string.IsNullOrEmpty(Model.CustomerInfoModel.Province))
+            {
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <label class="col-sm-3 label-title col-form-label"><strong>@Model.CustomerInfoModel.ProvinceType: </strong></label>
+                            <label class="col-sm-9 label-content col-form-label">@Model.CustomerInfoModel.Province</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <label class="col-sm-3 label-title col-form-label"><strong>@Model.CustomerInfoModel.DistrictType: </strong></label>
+                            <label class="col-sm-3 label-content col-form-label">@Model.CustomerInfoModel.District</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <label class="col-sm-3 label-title col-form-label"><strong>@Model.CustomerInfoModel.WardType: </strong></label>
+                            <label class="col-sm-3 label-content col-form-label">@Model.CustomerInfoModel.Ward</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-2">
-                    <label class="label-title col-form-label"><strong> Quận/huyện: </strong></label>
-                    <label class="label-content col-form-label">@Model.CustomerInfoModel.District</label>
-                </div>
-                <div class="col-lg-2">
-                    <label class="label-title col-form-label"><strong> Phường/xã: </strong></label>
-                    <label class="label-content col-form-label">@Model.CustomerInfoModel.Ward</label>
-                </div>
-            </div>
+            }
         }
+        <hr />
         <form class="row" method="post">
             <div class="col-md-12">
                 <h3>Tạo cơ hội bán hàng</h3>
@@ -136,7 +146,7 @@
                                      {
                                          @class = "form-control",
                                          @autocomplete = "none",
-                                         @id= "timepicker"
+                                         @id = "timepicker"
                                      })
                     <label>Giờ liên hệ:</label>
                     <i class="form-group__bar"></i>
@@ -213,6 +223,23 @@
                     @Html.ValidationMessageFor(c => c.ProductGroupId)
                 </div>
                 <div class="form-group form-group--float">
+                    <select class="form-control select2" id="CrmStatusId" name="CrmStatusId">
+                        @{
+                            var status = ViewBag.CrmStatuses as List<CrmStatusSimpleModel>;
+                            if (status != null)
+                            {
+                                foreach (var item in status)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Trạng thái</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.CrmStatusId)
+                </div>
+                <div class="form-group form-group--float">
                     <select class="form-control select2" id="CrmTypeId" name="CrmTypeId">
                         @{
                             var crmType = ViewBag.CrmTypes as List<CrmTypeSimpleModel>;
@@ -254,7 +281,11 @@
     <script src="~/vendors/datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <script>
         $(function () {
-            $("#datepicker").datetimepicker({ formatDate: 'dd-MM-yyyy', lang: 'vi', timepicker: false });
+            $("#datepicker").datetimepicker({ format: 'd-m-Y', lang: 'vi', timepicker: false });
+            $("#timepicker").datetimepicker({
+                datepicker: false,
+                format: 'H:i'
+            });
         });
     </script>
 }

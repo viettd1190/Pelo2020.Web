@@ -22,6 +22,9 @@ namespace Pelo.Web.Models.Customer
             Description = model.Description;
             UserCreated = model.UserCreated;
             DateCreated = model.DateCreated.ToString("dd-MM-yyyy hh:mm");
+            DistrictType = model.DistrictType;
+            ProvinceType = model.ProvinceType;
+            WardType = model.WardType;
         }
 
         public int Id { get; set; }
@@ -53,5 +56,11 @@ namespace Pelo.Web.Models.Customer
         public string UserCreated { get; set; }
 
         public string DateCreated { get; set; }
+
+        public string ProvinceType { get; set; }
+
+        public string DistrictType { get; set; }
+
+        public string WardType { get; set; }
     }
 }

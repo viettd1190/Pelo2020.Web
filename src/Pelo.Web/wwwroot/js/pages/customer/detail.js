@@ -1,4 +1,5 @@
 ﻿var table = null;
+var crmCounter = 0;
 $(document).ready(function () {
     addActiveClass('mnuCustomer');
     initTableCrm();
@@ -175,7 +176,7 @@ function initTableCrm() {
         paging: true,
         searching: true,
         ajax: {
-            url: "/Crm/GetListByCustomer",
+            url: "/GetListByCustomer",
             method: "POST"
         },
         columns: [
@@ -197,6 +198,7 @@ function initTableCrm() {
                 data: 'id',
                 orderable: false,
                 render: function (data, type, row, meta) {
+                    updateCrmCounter();
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             }, {
@@ -366,7 +368,157 @@ function initTableCrm() {
 function reloadData() {
     if (table !== null) {
         table
-            .columns(0).search($('#txtCustomerId').val())
+            .columns(0).search(window.customerId)
             .draw();
     }
+}
+function updateCrmCounter() {
+    crmCounter++;
+    $('#crmCount').html('('+crmCounter+')');
+}
+function initTableInvoice() {
+    table = $('#tblCrms').DataTable({
+        deferLoading: true,
+        processing: true,
+        serverSide: true,
+        ordering: true,
+        paging: true,
+        searching: true,
+        ajax: {
+            url: "/GetListInvoiceByCustomer",
+            method: "POST"
+        },
+        columns: [
+            { data: "id" },
+            { data: "invoice_status" },
+            { data: "code", sortable: false },
+            { data: "customer", sortable: false },
+            { data: "need", sortable: false },
+            { data: "branch" },
+            { data: "date_created" },
+            { data: "delivery_date" }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+                data: 'id',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    updateCrmCounter();
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            }, {
+                targets: 1,
+                data: 'invoice_status',
+                orderable: true,
+                render: function (data, type, row, meta) {
+                    return '<div style="margin:auto;"><span class="badge" style="color:#FFF; background-color: ' +
+                        row.invoice_status_color +
+                        '">' +
+                        data +
+                        '</span></div>';
+                }
+            }, {
+                targets: 2,
+                data: 'code',
+                className: 'datatable-cell-center',
+                searchable: true,
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return '<div style="padding:10px;"><div style="padding-top:10px;"><a href="/Invoice/Process/' + row.id + '" style="font-weight:800;">' + row.code + '</a></div></div>';
+                }
+            }, {
+                targets: 3,
+                data: 'customer',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    var customerName = '<span style="font-weight:600;font-size:16px;">' + data + '</span><br/>';
+                    var phone = '<span><a href="tel:' + row.customer_phone + '">' + row.customer_phone + '</a></span><br/>';
+                    var phone2 = '';
+                    if (isNull(row.customer_phone_2)) {
+                        phone2 = '<span><a href="tel:' + row.customer_phone_2 + '">' + row.customer_phone_2 + '</a></span><br/>';
+                    }
+                    var phone3 = '';
+                    if (isNull(row.customer_phone_3)) {
+                        phone3 = '<span><a href="tel:' + row.customer_phone_3 + '">' + row.customer_phone_3 + '</a></span><br/>';
+                    }
+                    var address = '';
+                    var condition = '';
+                    if (isNull(row.province)) {
+                        address = address + condition + row.province;
+                        condition = ', ';
+                    }
+                    if (isNull(row.district)) {
+                        address = address + condition + row.district;
+                        condition = ', ';
+                    }
+                    if (isNull(row.ward)) {
+                        address = address + condition + row.ward;
+                        condition = ', ';
+                    }
+                    if (isNull(row.customer_address)) {
+                        address = address + condition + row.customer_address;
+                    }
+                    if (isNull(address)) {
+                        address = '<span>Địa chỉ: <span style="font-weight:700;">' + address + '</span></span><br/>';
+                    }
+                    return '<div style="padding:10px;">' +
+                        customerName +
+                        phone +
+                        phone2 +
+                        phone3 +
+                        address +
+                        '</div>';
+                }
+            }, {
+                targets: 4,
+                data: 'id',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    var result = '';
+                    for (var i = 0; i < row.products.length; i++) {
+                        result += '</span>'+row.products[i].Name+'</span><br/>';
+                    }
+                    return '<div style="padding:10px;">' + result + '</div></div>';
+                }
+            }, {
+                targets: 5,
+                data: 'branch',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return '<div style="padding:10px;">' + data + '</div></div>';
+                }
+            }, {
+                targets: 6,
+                data: 'user_created',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    var userCreated = '<span>Lên đơn: <span style="font-weight:700;">' + row.user_created + '</span></span><br/>';
+                    var user_sell = '<span>Bán hàng: <span style="font-weight:700;">' + row.user_sell + '</span></span><br/>';
+                    return '<div style="padding:10px;">' + userCreated + user_sell + '</div></div>';
+                }
+            }, {
+                targets: 7,
+                data: 'date_created',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return '<div style="text-align:center;">' + moment(data).format('DD-MM-YYYY hh:mm') + '</div>';
+                }
+            }, {
+                targets: 8,
+                data: 'delivery_date',
+                className: 'datatable-cell-center',
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return '<div style="text-align:center;">' + moment(data).format('DD-MM-YYYY hh:mm') + '</div>';
+                }
+            }
+        ],
+        order: [[8, 'desc']]
+    });
 }

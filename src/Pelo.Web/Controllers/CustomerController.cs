@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Pelo.Common.Dtos.Crm;
 using Pelo.Common.Dtos.Customer;
 using Pelo.Common.Dtos.CustomerGroup;
 using Pelo.Common.Dtos.CustomerVip;
+using Pelo.Common.Dtos.Invoice;
 using Pelo.Common.Extensions;
 using Pelo.Web.Attributes;
 using Pelo.Web.Models.Customer;
@@ -332,6 +334,21 @@ namespace Pelo.Web.Controllers
         {
             var result = await _customerService.Delete(id);
             return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetListCrmByCustomer(DatatableRequest request)
+        {
+            var result = await _customerService.GetCustomerCrmByPaging(request);
+            if (result.IsSuccess) return Json(result.Data);
+            return Json(DatatableResponse<GetCrmPagingResponse>.Init(request.Draw));
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetListInvoiceByCustomer(DatatableRequest request)
+        {
+            var result = await _customerService.GetCustomerInvoiceByPaging(request);
+            if (result.IsSuccess) return Json(result.Data);
+            return Json(DatatableResponse<GetInvoicePagingResponse>.Init(request.Draw));
         }
     }
 }

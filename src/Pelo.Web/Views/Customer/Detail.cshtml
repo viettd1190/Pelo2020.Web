@@ -23,15 +23,15 @@
         .form-row {
             padding-top: 10px;
         }
-        
+
         a.title-history {
-            width:100%;
-            text-align:left;
-            margin-top:10px;
-            background-color:#c3c3c3;
-            color:#333;
+            width: 100%;
+            text-align: left;
+            margin-top: 10px;
+            background-color: #e8e8e8;
+            color: #333;
         }
-        </style>
+    </style>
 }
 
 <div class="card">
@@ -378,5 +378,15 @@
 </div>
 
 @section js{
+    <script>
+        var customerId = @Model.Id
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="~/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendors/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/vendors/flatpickr/flatpickr.min.js"></script>
     <script src="~/js/pages/customer/detail.js"></script>
 }
