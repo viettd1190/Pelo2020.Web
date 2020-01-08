@@ -13,7 +13,7 @@ namespace Pelo.Web.Services.CrmServices
 {
     public interface ICrmService
     {
-        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetByPaging(DatatableRequest request);        
+        Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetByPaging(DatatableRequest request);
 
         Task<TResponse<bool>> Insert(InsertCrmRequest request);
     }
@@ -271,6 +271,48 @@ namespace Pelo.Web.Services.CrmServices
                 var response = await HttpService.Send<bool>(url,
                                                             request,
                                                             HttpMethod.Post,
+                                                            true);
+                if (response.IsSuccess)
+                {
+                    return await Ok(true);
+                }
+
+                return await Fail<bool>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<bool>(exception);
+            }
+        }
+        public async Task<TResponse<GetCrmPagingResponse>> GetCrmById(int id)
+        {
+            try
+            {
+                var url = ApiUrl.GET_CRM_ID;
+                var response = await HttpService.Send<GetCrmPagingResponse>(url,
+                                                            id,
+                                                            HttpMethod.Get,
+                                                            true);
+                if (response.IsSuccess)
+                {
+                    return await Ok(response.Data);
+                }
+
+                return await Fail<GetCrmPagingResponse>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<GetCrmPagingResponse>(exception);
+            }
+        }
+        public async Task<TResponse<bool>> Update(UpdateCrmRequest request)
+        {
+            try
+            {
+                var url = ApiUrl.CRM_UPDATE;
+                var response = await HttpService.Send<bool>(url,
+                                                            request,
+                                                            HttpMethod.Put,
                                                             true);
                 if (response.IsSuccess)
                 {

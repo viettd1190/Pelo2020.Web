@@ -177,7 +177,7 @@ function initTableCrm() {
         paging: true,
         searching: true,
         ajax: {
-            url: "/GetListByCustomer",
+            url: "/Customer/GetListCrmByCustomer",
             method: "POST"
         },
         columns: [
@@ -386,7 +386,7 @@ function initTableInvoice() {
         paging: true,
         searching: true,
         ajax: {
-            url: "/GetListInvoiceByCustomer",
+            url: "/Customer/GetListInvoiceByCustomer",
             method: "POST"
         },
         columns: [
