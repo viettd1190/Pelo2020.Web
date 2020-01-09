@@ -153,7 +153,7 @@ function initTable() {
                 searchable: true,
                 orderable: false,
                 render: function (data, type, row, meta) {
-                    return '<div style="padding:10px;"><div style="padding-top:10px;"><a href="/Customer/Detail?id=' + row.customer_id +'&nextAction=Crm" style="font-weight:800;">' + row.code + '</a></div></div>';
+                    return '<div style="padding:10px;"><div style="padding-top:10px;"><a href="/Crm/Update?id=' + row.id +'" style="font-weight:800;">' + row.code + '</a></div></div>';
                 }
             }, {
                 targets: 3,

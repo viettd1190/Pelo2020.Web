@@ -16,6 +16,10 @@ namespace Pelo.Web.Services.CrmServices
         Task<TResponse<DatatableResponse<GetCrmPagingResponse>>> GetByPaging(DatatableRequest request);
 
         Task<TResponse<bool>> Insert(InsertCrmRequest request);
+
+        Task<TResponse<GetCrmModelReponse>> GetCrmById(int id);
+
+        Task<TResponse<bool>> Update(UpdateCrmRequest request);
     }
 
     public class CrmService : BaseService,
@@ -284,13 +288,14 @@ namespace Pelo.Web.Services.CrmServices
                 return await Fail<bool>(exception);
             }
         }
-        public async Task<TResponse<GetCrmPagingResponse>> GetCrmById(int id)
+        public async Task<TResponse<GetCrmModelReponse>> GetCrmById(int id)
         {
             try
             {
-                var url = ApiUrl.GET_CRM_ID;
-                var response = await HttpService.Send<GetCrmPagingResponse>(url,
-                                                            id,
+                var url = string.Format(ApiUrl.GET_CRM_ID,
+                                        id);
+                var response = await HttpService.Send<GetCrmModelReponse>(url,
+                                                            null,
                                                             HttpMethod.Get,
                                                             true);
                 if (response.IsSuccess)
@@ -298,11 +303,11 @@ namespace Pelo.Web.Services.CrmServices
                     return await Ok(response.Data);
                 }
 
-                return await Fail<GetCrmPagingResponse>(response.Message);
+                return await Fail<GetCrmModelReponse>(response.Message);
             }
             catch (Exception exception)
             {
-                return await Fail<GetCrmPagingResponse>(exception);
+                return await Fail<GetCrmModelReponse>(exception);
             }
         }
         public async Task<TResponse<bool>> Update(UpdateCrmRequest request)
@@ -313,7 +318,7 @@ namespace Pelo.Web.Services.CrmServices
                 var response = await HttpService.Send<bool>(url,
                                                             request,
                                                             HttpMethod.Put,
-                                                            true);
+                                                              true);
                 if (response.IsSuccess)
                 {
                     return await Ok(true);

@@ -86,7 +86,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var users = await _userService.GetAll();
-                if(users.IsSuccess)
+                if (users.IsSuccess)
                     return new Tuple<IEnumerable<UserDisplaySimpleModel>, string>(users.Data,
                                                                                   string.Empty);
 
@@ -107,7 +107,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var customerGroups = await _customerGroupService.GetAll();
-                if(customerGroups.IsSuccess)
+                if (customerGroups.IsSuccess)
                     return new Tuple<IEnumerable<CustomerGroupSimpleModel>, string>(customerGroups.Data,
                                                                                     string.Empty);
 
@@ -128,7 +128,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var customerVips = await _customerVipService.GetAll();
-                if(customerVips.IsSuccess)
+                if (customerVips.IsSuccess)
                     return new Tuple<IEnumerable<CustomerVipSimpleModel>, string>(customerVips.Data,
                                                                                   string.Empty);
 
@@ -149,7 +149,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var customerSources = await _customerSourceService.GetAll();
-                if(customerSources.IsSuccess)
+                if (customerSources.IsSuccess)
                     return new Tuple<IEnumerable<CustomerSourceSimpleModel>, string>(customerSources.Data,
                                                                                      string.Empty);
 
@@ -170,7 +170,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var crmStatuses = await _crmStatusService.GetAll();
-                if(crmStatuses.IsSuccess)
+                if (crmStatuses.IsSuccess)
                     return new Tuple<IEnumerable<CrmStatusSimpleModel>, string>(crmStatuses.Data,
                                                                                 string.Empty);
 
@@ -191,7 +191,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var productGroupes = await _productGroupService.GetAll();
-                if(productGroupes.IsSuccess)
+                if (productGroupes.IsSuccess)
                     return new Tuple<IEnumerable<ProductGroupSimpleModel>, string>(productGroupes.Data,
                                                                                    string.Empty);
 
@@ -212,7 +212,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var crmTypees = await _crmTypeService.GetAll();
-                if(crmTypees.IsSuccess)
+                if (crmTypees.IsSuccess)
                     return new Tuple<IEnumerable<CrmTypeSimpleModel>, string>(crmTypees.Data,
                                                                               string.Empty);
 
@@ -233,7 +233,7 @@ namespace Pelo.Web.Controllers
             try
             {
                 var crmPriorityes = await _crmPriorityService.GetAll();
-                if(crmPriorityes.IsSuccess)
+                if (crmPriorityes.IsSuccess)
                     return new Tuple<IEnumerable<CrmPrioritySimpleModel>, string>(crmPriorityes.Data,
                                                                                   string.Empty);
 
@@ -253,7 +253,7 @@ namespace Pelo.Web.Controllers
         {
             var userCares = await GetAllUsers();
             ViewBag.UserCares = userCares.Item1.ToList();
-            if(!string.IsNullOrEmpty(userCares.Item2))
+            if (!string.IsNullOrEmpty(userCares.Item2))
             {
                 ModelState.AddModelError("",
                                          userCares.Item2);
@@ -261,56 +261,56 @@ namespace Pelo.Web.Controllers
 
             var customerSources = await GetAllCustomerSources();
             ViewBag.CustomerSources = customerSources.Item1.ToList();
-            if(!string.IsNullOrEmpty(customerSources.Item2))
+            if (!string.IsNullOrEmpty(customerSources.Item2))
                 ModelState.AddModelError("",
                                          customerSources.Item2);
 
             var customerGroups = await GetAllCustomerGroups();
             ViewBag.CustomerGroups = customerGroups.Item1.ToList();
-            if(!string.IsNullOrEmpty(customerGroups.Item2))
+            if (!string.IsNullOrEmpty(customerGroups.Item2))
                 ModelState.AddModelError("",
                                          customerGroups.Item2);
 
             var customerVips = await GetAllCustomerVips();
             ViewBag.CustomerVips = customerVips.Item1.ToList();
-            if(!string.IsNullOrEmpty(customerVips.Item2))
+            if (!string.IsNullOrEmpty(customerVips.Item2))
                 ModelState.AddModelError("",
                                          customerVips.Item2);
 
             var productGroups = await GetAllProductGroups();
             ViewBag.ProductGroups = productGroups.Item1.ToList();
-            if(!string.IsNullOrEmpty(productGroups.Item2))
+            if (!string.IsNullOrEmpty(productGroups.Item2))
                 ModelState.AddModelError("",
                                          productGroups.Item2);
 
             var crmTypes = await GetAllCrmTypes();
             ViewBag.CrmTypes = crmTypes.Item1.ToList();
-            if(!string.IsNullOrEmpty(crmTypes.Item2))
+            if (!string.IsNullOrEmpty(crmTypes.Item2))
                 ModelState.AddModelError("",
                                          crmTypes.Item2);
 
             var crmPriorities = await GetAllCrmPriorities();
             ViewBag.CrmPriorities = crmPriorities.Item1.ToList();
-            if(!string.IsNullOrEmpty(crmPriorities.Item2))
+            if (!string.IsNullOrEmpty(crmPriorities.Item2))
                 ModelState.AddModelError("",
                                          crmPriorities.Item2);
 
             var crmStatuses = await GetAllCrmStatuses();
             ViewBag.CrmStatuses = crmStatuses.Item1.ToList();
-            if(!string.IsNullOrEmpty(crmStatuses.Item2))
+            if (!string.IsNullOrEmpty(crmStatuses.Item2))
                 ModelState.AddModelError("",
                                          crmStatuses.Item2);
 
             List<UserDisplaySimpleModel> userCreateds = new List<UserDisplaySimpleModel>();
             var currentUser = new UserDisplaySimpleModel
-                              {
-                                      DisplayName = CurrentUser.DisplayName,
-                                      Id = CurrentUser.Id
-                              };
-            var isDefaultCrmRole = await _userService.IsBelongDefaultCrmRole();
-            if(isDefaultCrmRole.IsSuccess)
             {
-                if(isDefaultCrmRole.Data)
+                DisplayName = CurrentUser.DisplayName,
+                Id = CurrentUser.Id
+            };
+            var isDefaultCrmRole = await _userService.IsBelongDefaultCrmRole();
+            if (isDefaultCrmRole.IsSuccess)
+            {
+                if (isDefaultCrmRole.Data)
                 {
                     ViewBag.IsDefaultCrmRole = true;
                     userCreateds.AddRange(userCares.Item1);
@@ -336,7 +336,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> GetList(DatatableRequest request)
         {
             var result = await _crmService.GetByPaging(request);
-            if(result.IsSuccess) return Json(result.Data);
+            if (result.IsSuccess) return Json(result.Data);
 
             return Json(DatatableResponse<GetCrmPagingResponse>.Init(request.Draw));
         }
@@ -353,7 +353,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> GetAllProvinces()
         {
             var provinces = await _provinceService.GetAllProvinces();
-            if(provinces.IsSuccess)
+            if (provinces.IsSuccess)
             {
                 return Json(provinces.Data);
             }
@@ -367,7 +367,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> GetAllDistricts(int id)
         {
             var districts = await _provinceService.GetAllDistricts(id);
-            if(districts.IsSuccess)
+            if (districts.IsSuccess)
             {
                 return Json(districts.Data);
             }
@@ -381,7 +381,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> GetAllWards(int id)
         {
             var wards = await _provinceService.GetAllWards(id);
-            if(wards.IsSuccess)
+            if (wards.IsSuccess)
             {
                 return Json(wards.Data);
             }
@@ -392,54 +392,54 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> Add(string phone)
         {
             var customer = await _customerService.GetByPhone(phone);
-            if(customer.IsSuccess)
+            if (customer.IsSuccess)
             {
                 await SetViewBag();
                 return View(new InsertCrmModel
-                            {
-                                    CustomerInfoModel = new CustomerInfoModel(customer.Data),
-                                    ContactDate = string.Empty,
-                                    ContactTime = string.Empty,
-                                    Need = string.Empty,
-                                    Description = string.Empty,
-                                    Visit = -1,
-                                    UserIds = null,
-                                    CustomerId = customer.Data.Id,
-                                    Phone = phone
-                            });
+                {
+                    CustomerInfoModel = new CustomerInfoModel(customer.Data),
+                    ContactDate = string.Empty,
+                    ContactTime = string.Empty,
+                    Need = string.Empty,
+                    Description = string.Empty,
+                    Visit = -1,
+                    UserIds = null,
+                    CustomerId = customer.Data.Id,
+                    Phone = phone
+                });
             }
 
             return RedirectToAction("Add",
                                     "Customer",
                                     new
                                     {
-                                            nextAction = "Crm"
+                                        nextAction = "Crm"
                                     });
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(InsertCrmModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(!string.IsNullOrEmpty(model.ContactDate)
+                if (!string.IsNullOrEmpty(model.ContactDate)
                    && !string.IsNullOrEmpty(model.ContactTime))
                 {
                     DateTime contactDate = DateTime.Parse($"{model.ContactDate} {model.ContactTime}");
                     var result = await _crmService.Insert(new InsertCrmRequest
-                                                    {
-                                                            Need = model.Need,
-                                                            CrmPriorityId = model.CrmPriorityId,
-                                                            CrmStatusId = model.CrmStatusId,
-                                                            CrmTypeId = model.CrmTypeId,
-                                                            CustomerId = model.CustomerId,
-                                                            CustomerSourceId = model.CustomerSourceId,
-                                                            Description = model.Description,
-                                                            ProductGroupId = model.ProductGroupId,
-                                                            Visit = model.Visit,
-                                                            ContactDate = contactDate,
-                                                            UserIds = model.UserIds.ToList(),
-                                                    });
+                    {
+                        Need = model.Need,
+                        CrmPriorityId = model.CrmPriorityId,
+                        CrmStatusId = model.CrmStatusId,
+                        CrmTypeId = model.CrmTypeId,
+                        CustomerId = model.CustomerId,
+                        CustomerSourceId = model.CustomerSourceId,
+                        Description = model.Description,
+                        ProductGroupId = model.ProductGroupId,
+                        Visit = model.Visit,
+                        ContactDate = contactDate,
+                        UserIds = model.UserIds.ToList(),
+                    });
                     if (result.IsSuccess)
                     {
                         TempData["Update"] = result.ToJson();
@@ -463,7 +463,7 @@ namespace Pelo.Web.Controllers
         public async Task<IActionResult> CustomerInfo(string phone)
         {
             var customer = await _customerService.GetByPhone(phone);
-            if(customer.IsSuccess)
+            if (customer.IsSuccess)
             {
                 //return View(new CustomerInfoModel(customer.Data));
                 return View(new CustomerInfoModel());
@@ -473,9 +473,84 @@ namespace Pelo.Web.Controllers
                                     "Customer",
                                     new
                                     {
-                                            nextAction = "Crm"
+                                        nextAction = "Crm"
                                     });
         }
 
+        public async Task<IActionResult> Update(int id)
+        {
+            var crm = await _crmService.GetCrmById(id);
+            if (crm.IsSuccess)
+            {
+                await SetViewBag();
+                if (crm.Data != null)
+                {
+                    return View(new UpdateCrmModel
+                    {
+                        Name = crm.Data.CustomerName,
+                        UserCreated = crm.Data.UserCreated,
+                        DateCreated = crm.Data.DateCreated.ToString("dd-MM-yyyy hh:mm"),
+                        CustomerGroup = crm.Data.CustomerGroup,
+                        CustomerVip = crm.Data.CustomerVip,                        
+                        ContactDate = crm.Data.ContactDate.ToString("dd-MM-yyyy"),
+                        ContactTime = crm.Data.ContactDate.ToString("H:mm"),
+                        Address = crm.Data.CustomerAddress,
+                        Need = crm.Data.Need,
+                        Description = crm.Data.Description,
+                        Visit = crm.Data.Visit,
+                        UserIds = crm.Data.UserCares.Select(c => c.Id).ToArray(),
+                        Id = crm.Data.Id,
+                        CustomerId = crm.Data.CustomerId,
+                        CrmPriorityId = crm.Data.CrmPriorityId,
+                        CrmStatusId = crm.Data.CrmStatusId,
+                        CustomerSourceId = crm.Data.CustomerSourceId,
+                        Code = crm.Data.Code,
+                        CrmTypeId = crm.Data.CrmTypeId,
+                        ProductGroupId = crm.Data.ProductGroupId,
+                        Phone = crm.Data.CustomerPhone
+                    });
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateCrmModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(model.ContactDate)
+                   && !string.IsNullOrEmpty(model.ContactTime))
+                {
+                    DateTime contactDate = DateTime.Parse($"{model.ContactDate} {model.ContactTime}");
+                    var result = await _crmService.Update(new UpdateCrmRequest
+                    {
+                        Id = model.Id,
+                        Need = model.Need,
+                        CrmPriorityId = model.CrmPriorityId,
+                        CrmStatusId = model.CrmStatusId,
+                        CrmTypeId = model.CrmTypeId,
+                        CustomerSourceId = model.CustomerSourceId,
+                        Description = model.Description,
+                        ProductGroupId = model.ProductGroupId,
+                        Visit = model.Visit,
+                        ContactDate = contactDate,
+                        UserIds = model.UserIds.ToList(),                        
+                    });
+                    if (result.IsSuccess)
+                    {
+                        TempData["Update"] = result.ToJson();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("",
+                                             result.Message);
+                    }
+                }
+            }
+            await SetViewBag();
+            return View(model);
+        }
     }
 }
