@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
-    <Folder Include="Views\Invoice\" />
     <Folder Include="wwwroot\js\pages\invoice\" />
   </ItemGroup>
 

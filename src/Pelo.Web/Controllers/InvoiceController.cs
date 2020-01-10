@@ -6,11 +6,16 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Pelo.Common.Dtos.Branch;
+using Pelo.Common.Dtos.Crm;
 using Pelo.Common.Dtos.Invoice;
 using Pelo.Common.Dtos.InvoiceStatus;
 using Pelo.Common.Dtos.User;
 using Pelo.Web.Attributes;
+using Pelo.Web.Models.Crm;
+using Pelo.Web.Models.Customer;
 using Pelo.Web.Models.Datatables;
+using Pelo.Web.Models.Invoice;
+using Pelo.Web.Services.CustomerServices;
 using Pelo.Web.Services.InvoiceServices;
 using Pelo.Web.Services.MasterServices;
 using Pelo.Web.Services.UserServices;
@@ -30,10 +35,13 @@ namespace Pelo.Web.Controllers
 
         private IInvoiceService _invoiceService;
 
+        private ICustomerService _customerService;
+
         public InvoiceController(IInvoiceStatusService invoiceStatusService,
                                  IBranchService branchService,
                                  IUserService userService,
                                  IInvoiceService invoiceService,
+                                 ICustomerService customerService,
                                  IMapper mapper,
                                  ILogger<InvoiceController> logger) : base(logger)
         {
@@ -41,6 +49,7 @@ namespace Pelo.Web.Controllers
             _branchService = branchService;
             _userService = userService;
             _invoiceService = invoiceService;
+            _customerService = customerService;
             _mapper = mapper;
         }
 
@@ -167,5 +176,70 @@ namespace Pelo.Web.Controllers
 
             return Json(DatatableResponse<GetInvoicePagingResponse>.Init(request.Draw));
         }
+
+        public async Task<IActionResult> Add(string phone)
+        {
+            var customer = await _customerService.GetByPhone(phone);
+            if (customer.IsSuccess)
+            {
+                await SetViewBag();
+                return View(new InsertInvoiceModel
+                            {
+                                    CustomerInfoModel = new CustomerInfoModel(customer.Data),
+                                    CustomerId = customer.Data.Id,
+                                    DeliveryDate = DateTime.Now
+                            });
+            }
+
+            return RedirectToAction("Add",
+                                    "Customer",
+                                    new
+                                    {
+                                        nextAction = "Invoice"
+                                    });
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Add(InsertCrmModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (!string.IsNullOrEmpty(model.ContactDate)
+        //           && !string.IsNullOrEmpty(model.ContactTime))
+        //        {
+        //            DateTime contactDate = DateTime.Parse($"{model.ContactDate} {model.ContactTime}");
+        //            var result = await _crmService.Insert(new InsertCrmRequest
+        //            {
+        //                Need = model.Need,
+        //                CrmPriorityId = model.CrmPriorityId,
+        //                CrmStatusId = model.CrmStatusId,
+        //                CrmTypeId = model.CrmTypeId,
+        //                CustomerId = model.CustomerId,
+        //                CustomerSourceId = model.CustomerSourceId,
+        //                Description = model.Description,
+        //                ProductGroupId = model.ProductGroupId,
+        //                Visit = model.Visit,
+        //                ContactDate = contactDate,
+        //                UserIds = model.UserIds.ToList(),
+        //            });
+        //            if (result.IsSuccess)
+        //            {
+        //                TempData["Update"] = result.ToJson();
+        //                return RedirectToAction("Index",
+        //                                        "Crm");
+        //            }
+
+        //            ModelState.AddModelError("",
+        //                                     result.Message);
+        //        }
+        //    }
+        //    var customer = await _customerService.GetByPhone(model.Phone);
+        //    if (customer.IsSuccess)
+        //    {
+        //        model.CustomerInfoModel = new CustomerInfoModel(customer.Data);
+        //    }
+        //    await SetViewBag();
+        //    return View(model);
+        //}
     }
 }
