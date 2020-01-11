@@ -15,7 +15,7 @@ namespace Pelo.Web.Services.HttpServices
                                    object content,
                                    HttpMethod method,
                                    bool authentication = false,
-                                   string version = "");
+                                   string version = "", string contentType="");
     }
 
     public class HttpService : IHttpService
@@ -33,7 +33,7 @@ namespace Pelo.Web.Services.HttpServices
                                                 object content,
                                                 HttpMethod method,
                                                 bool authentication = false,
-                                                string version = "")
+                                                string version = "", string contentType = "")
         {
             try
             {
@@ -64,7 +64,10 @@ namespace Pelo.Web.Services.HttpServices
 
                     request.Headers.Add("Controller", _contextHelper.GetController());
                     request.Headers.Add("Action", _contextHelper.GetAction());
-
+                    if (!string.IsNullOrEmpty(contentType))
+                    {
+                        request.Headers.Add("Content-Type", contentType);
+                    }
                     var response = await client.SendAsync(request);
 
                     var res = await response.Content.ReadAsStringAsync();

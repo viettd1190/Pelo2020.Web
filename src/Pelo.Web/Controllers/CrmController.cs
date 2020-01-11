@@ -491,7 +491,7 @@ namespace Pelo.Web.Controllers
                         UserCreated = crm.Data.UserCreated,
                         DateCreated = crm.Data.DateCreated.ToString("dd-MM-yyyy hh:mm"),
                         CustomerGroup = crm.Data.CustomerGroup,
-                        CustomerVip = crm.Data.CustomerVip,                        
+                        CustomerVip = crm.Data.CustomerVip,
                         ContactDate = crm.Data.ContactDate.ToString("dd-MM-yyyy"),
                         ContactTime = crm.Data.ContactDate.ToString("H:mm"),
                         Address = crm.Data.CustomerAddress,
@@ -536,7 +536,7 @@ namespace Pelo.Web.Controllers
                         ProductGroupId = model.ProductGroupId,
                         Visit = model.Visit,
                         ContactDate = contactDate,
-                        UserIds = model.UserIds.ToList(),                        
+                        UserIds = model.UserIds.ToList(),
                     });
                     if (result.IsSuccess)
                     {
@@ -551,6 +551,28 @@ namespace Pelo.Web.Controllers
             }
             await SetViewBag();
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateComment(AddCommentCrm model)
+        {
+            bool isSuccess = false;
+            if (model.Id > 0 && model.CrmStatusId > 0)
+            {
+                var rs = await _crmService.UpdateCrmComment(new CommentCrmRequest
+                {
+                    Id = model.Id,
+                    CrmStatusId = model.CrmStatusId,
+                    Comment = model.Comment,
+                    File = model.File
+                });
+                if (rs.IsSuccess)
+                {
+                    TempData["Update"] = rs.ToJson();
+                    isSuccess = rs.IsSuccess;
+                }
+            }
+            return Json(isSuccess);
         }
     }
 }
