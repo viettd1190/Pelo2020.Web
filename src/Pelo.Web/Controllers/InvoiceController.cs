@@ -9,6 +9,7 @@ using Pelo.Common.Dtos.Branch;
 using Pelo.Common.Dtos.Crm;
 using Pelo.Common.Dtos.Invoice;
 using Pelo.Common.Dtos.InvoiceStatus;
+using Pelo.Common.Dtos.Product;
 using Pelo.Common.Dtos.User;
 using Pelo.Web.Attributes;
 using Pelo.Web.Models.Crm;
@@ -37,11 +38,14 @@ namespace Pelo.Web.Controllers
 
         private ICustomerService _customerService;
 
+        private IProductService _productService;
+
         public InvoiceController(IInvoiceStatusService invoiceStatusService,
                                  IBranchService branchService,
                                  IUserService userService,
                                  IInvoiceService invoiceService,
                                  ICustomerService customerService,
+                                 IProductService productService,
                                  IMapper mapper,
                                  ILogger<InvoiceController> logger) : base(logger)
         {
@@ -50,6 +54,7 @@ namespace Pelo.Web.Controllers
             _userService = userService;
             _invoiceService = invoiceService;
             _customerService = customerService;
+            _productService = productService;
             _mapper = mapper;
         }
 
@@ -116,6 +121,27 @@ namespace Pelo.Web.Controllers
             }
         }
 
+        private async Task<Tuple<IEnumerable<ProductSimpleModel>, string>> GetAllProducts()
+        {
+            try
+            {
+                var products = await _productService.GetAll();
+                if (products.IsSuccess)
+                    return new Tuple<IEnumerable<ProductSimpleModel>, string>(products.Data,
+                                                                             string.Empty);
+
+                Logger.LogInformation(products.Message);
+                return new Tuple<IEnumerable<ProductSimpleModel>, string>(new List<ProductSimpleModel>(),
+                                                                          products.Message);
+            }
+            catch (Exception exception)
+            {
+                Logger.LogInformation(exception.ToString());
+                return new Tuple<IEnumerable<ProductSimpleModel>, string>(new List<ProductSimpleModel>(),
+                                                                         exception.ToString());
+            }
+        }
+
         private async Task SetViewBag()
         {
             var users = await GetAllUsers();
@@ -161,6 +187,30 @@ namespace Pelo.Web.Controllers
             ViewBag.UserCreateds = userCreateds;
         }
 
+        private async Task SetViewBag2()
+        {
+            var users = await GetAllUsers();
+            ViewBag.Users = users.Item1.ToList();
+            if(!string.IsNullOrEmpty(users.Item2))
+            {
+                ModelState.AddModelError("",users.Item2);
+            }
+
+            var products = await GetAllProducts();
+            ViewBag.Products = products.Item1.ToList();
+            if(!string.IsNullOrEmpty(products.Item2))
+            {
+                ModelState.AddModelError("",products.Item2);
+            }
+
+            var branches = await GetAllBranches();
+            ViewBag.Branches = branches.Item1.ToList();
+            if (!string.IsNullOrEmpty(branches.Item2))
+                ModelState.AddModelError("",
+                                         branches.Item2);
+
+        }
+
         public async Task<IActionResult> Index()
         {
             await SetViewBag();
@@ -182,7 +232,7 @@ namespace Pelo.Web.Controllers
             var customer = await _customerService.GetByPhone(phone);
             if (customer.IsSuccess)
             {
-                await SetViewBag();
+                await SetViewBag2();
                 return View(new InsertInvoiceModel
                             {
                                     CustomerInfoModel = new CustomerInfoModel(customer.Data),

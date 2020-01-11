@@ -181,5 +181,11 @@
 
         #endregion
 
+        #region Product
+
+        public const string PRODUCT_GET_ALL = BASE_API_URL + "/api/product/all";
+
+        #endregion
+
     }
 }
