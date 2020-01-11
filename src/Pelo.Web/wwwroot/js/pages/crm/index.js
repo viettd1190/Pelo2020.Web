@@ -260,7 +260,7 @@ function initTable() {
                             '</span></span><br/>';
                     }
                     var visit = 'Chưa đến';
-                    if(row.visit==1) {
+                    if(row.visit == 1) {
                         visit='Đã đến';
                     }
                     visit = '<span>Đến cửa hàng: <span style="font-weight:700;">' + visit + '</span></span><br/>';

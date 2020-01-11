@@ -20,6 +20,8 @@ namespace Pelo.Web.Services.CrmServices
         Task<TResponse<GetCrmModelReponse>> GetCrmById(int id);
 
         Task<TResponse<bool>> Update(UpdateCrmRequest request);
+
+        Task<TResponse<bool>> UpdateCrmComment(CommentCrmRequest request);
     }
 
     public class CrmService : BaseService,
@@ -319,6 +321,27 @@ namespace Pelo.Web.Services.CrmServices
                                                             request,
                                                             HttpMethod.Put,
                                                               true);
+                if (response.IsSuccess)
+                {
+                    return await Ok(true);
+                }
+
+                return await Fail<bool>(response.Message);
+            }
+            catch (Exception exception)
+            {
+                return await Fail<bool>(exception);
+            }
+        }
+        public async Task<TResponse<bool>> UpdateCrmComment(CommentCrmRequest request)
+        {
+            try
+            {
+                var url = ApiUrl.CRM_COMMENT_UPDATE;
+                var response = await HttpService.Send<bool>(url,
+                                                            request,
+                                                            HttpMethod.Put,
+                                                              true,"", "multipart/form-data");
                 if (response.IsSuccess)
                 {
                     return await Ok(true);

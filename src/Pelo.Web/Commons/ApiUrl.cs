@@ -157,6 +157,8 @@
 
         public const string CRM_UPDATE= BASE_API_URL + "/api/crm";
 
+        public const string CRM_COMMENT_UPDATE = BASE_API_URL + "/api/crm/comment";
+
         #endregion
 
         #region Province / District / Ward

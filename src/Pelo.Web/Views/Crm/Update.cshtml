@@ -22,6 +22,15 @@
         color: #666EE8;
         padding-left: 5px;
     }
+
+    .script {
+        text-align: center;
+        align-content: center;
+    }
+
+    .hide-script {
+        display: none;
+    }
 </style>
 
 <div class="card">
@@ -200,6 +209,30 @@
                     @Html.ValidationMessageFor(c => c.CustomerSourceId)
                 </div>
                 <div class="form-group form-group--float">
+                    <select class="form-control select2" id="CrmTypeId" name="CrmTypeId">
+                        @{
+                            var crmType = ViewBag.CrmTypes as List<CrmTypeSimpleModel>;
+                            if (crmType != null)
+                            {
+                                foreach (var item in crmType)
+                                {
+                                    if (Model.CrmStatusId == item.Id)
+                                    {
+                                        <option value="@item.Id" selected>@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                    <label>Kiểu chốt</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.CrmTypeId)
+                </div>
+                <div class="form-group form-group--float">
                     <select class="form-control select2" id="ProductGroupId" name="ProductGroupId">
                         @{
                             var product = ViewBag.ProductGroups as List<ProductGroupSimpleModel>;
@@ -223,6 +256,28 @@
                     <i class="form-group__bar"></i>
                     @Html.ValidationMessageFor(c => c.ProductGroupId)
                 </div>
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="Visit" name="Visit">
+                        <option value="-1">Tất cả</option>
+                        <option value="0">Chưa đến</option>
+                        <option value="1">Đã đến</option>
+                    </select>
+                    <label>Đến cửa hàng</label>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.Visit)
+                </div>
+            </div>
+            <div class="col-12 cmd-center">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a class="btn btn-secondary" href="@Url.Action("Index")">Hủy</a>
+            </div>
+        </form>
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <div class="script">Chưa có nội dung</div>
+            </div>
+            <div class="col-4">
                 <div class="form-group form-group--float">
                     <select class="form-control select2" id="CrmStatusId" name="CrmStatusId">
                         @{
@@ -248,21 +303,20 @@
                     @Html.ValidationMessageFor(c => c.CrmStatusId)
                 </div>
                 <div class="form-group form-group--float">
-                    <select class="form-control select2" id="Visit" name="Visit">
-                        <option value="-1">Tất cả</option>
-                        <option value="0">Chưa đến</option>
-                        <option value="1">Đã đến</option>
-                    </select>
-                    <label>Đến cửa hàng</label>
+                    <textarea class="form-control" id="Comment" name="Comment">
+                    </textarea>
+                    <label for="Comment">Bình luận</label>
                     <i class="form-group__bar"></i>
-                    @Html.ValidationMessageFor(c => c.Visit)
+                </div>
+                <div class="form-group form-group--float">
+                    <label>Đính kèm (Nhớ bình luận để cập nhật được)</label>
+                    <input type="file" id="uploadFile"/>
+                </div>
+                <div class="col-12 cmd-center">
+                    <button type="button" onclick="updateComment" class="btn btn-primary">Cập nhật</button>
                 </div>
             </div>
-            <div class="col-12 cmd-center">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <a class="btn btn-secondary" href="@Url.Action("Index")">Hủy</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 @section css{
@@ -270,14 +324,10 @@
 }
 @section js{
     <script src="~/vendors/datetimepicker/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        $(function () {
-            $("#datepicker").datetimepicker({ format: 'd-m-Y', lang: 'vi', timepicker: false });
-            $("#timepicker").datetimepicker({
-                datepicker: false,
-                format: 'H:i'
-            });
-        });
-    </script>
+    <script src="~/vendors/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/vendors/jszip/jszip.min.js"></script>
+    <script src="~/vendors/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="~/vendors/flatpickr/flatpickr.min.js"></script>
+    <script src="~/js/pages/crm/update.js"></script>
 }
 
