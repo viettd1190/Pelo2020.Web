@@ -129,7 +129,7 @@
                         <th></th>
                         <th></th>
                         <th>Tổng cộng:</th>
-                        <th colspan="2"><input class="form-control" style="text-align:right;" id="totalInvoice" readonly="readonly" /></th>
+                        <th colspan="2"><input class="form-control" style="text-align:right;font-weight:900;font-size:large;" id="totalInvoice" readonly="readonly" /></th>
                     </tr>
                     <tr>
                         <th></th>
@@ -152,7 +152,7 @@
                         <th></th>
                         <th>Thanh toán:</th>
                         <th colspan="2">
-                            <input class="form-control" style="text-align:right;" id="totalAfterDiscount" readonly="readonly" />
+                            <input class="form-control" style="text-align:right;font-weight:900;font-size:large;" id="totalAfterDiscount" readonly="readonly" />
                         </th>
                     </tr>
                     </tfoot>
@@ -190,21 +190,47 @@
                 </div>*@
             </div>
             <div class="col-md-12">
-                <div class="form-group form-group--float">
-                    <select id="PayMethodId" name="PayMethodId" class="form-control select2">
-                        <option value="0">--Hình thức thanh toán--</option>
-                        @{
-                            var payMethods = ViewBag.PayMethods as List<PayMethodSimpleModel>;
-                            if(payMethods!=null) {
-                                foreach (var payMethod in payMethods) {
-                                    <option value="@payMethod.Id">@payMethod.Name</option>
+                <div class="col-sm-12 col-md-4">
+                    <div class="form-group form-group--float">
+                        <select id="PayMethodId" name="PayMethodId" class="form-control select2">
+                            <option value="0">--Hình thức thanh toán--</option>
+                            @{
+                                var payMethods = ViewBag.PayMethods as List<PayMethodSimpleModel>;
+                                if (payMethods != null)
+                                {
+                                    foreach (var payMethod in payMethods)
+                                    {
+                                        <option value="@payMethod.Id">@payMethod.Name</option>
+                                    }
                                 }
                             }
-                        }
-                    </select>
-                    <i class="form-group__bar"></i>
-                    @Html.ValidationMessageFor(c => c.PayMethodId)
+                        </select>
+                        <i class="form-group__bar"></i>
+                        @Html.ValidationMessageFor(c => c.PayMethodId)
+                    </div>
                 </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="form-group form-group--float">
+                        @Html.TextBoxFor(c => c.Deposit,
+                                         new
+                                         {
+                                                 @class = "form-control",
+                                                 @autocomplete = "none",
+                                                 @onblur="changeAmountAfterDeposit();"
+                                         })
+                        <label>Đã trả</label>
+                        <i class="form-group__bar"></i>
+                        @Html.ValidationMessageFor(c => c.Deposit)
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="form-group form-group--float">
+                        <input class="form-control" readonly="readonly" id="txtAfterDeposit" value="0"/>
+                        <i class="form-group__bar"></i>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4"></div>
+
             </div>
         </form>
     </div>
@@ -277,6 +303,12 @@
             $('#Discount').val(Util.number.format(discount));
             totalAfterDiscount -= discount;
             displayTotalAmount();
+        }
+        function changeAmountAfterDeposit() {
+            var deposit = $('#Deposit').val().replace(/,/g, '');
+            $('#Deposit').val(Util.number.format(deposit));
+            var amountAfterDeposit = totalAfterDiscount - deposit;
+            $('#txtAfterDeposit').val(Util.number.format(amountAfterDeposit));
         }
     </script>
 }
