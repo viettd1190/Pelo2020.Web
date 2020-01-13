@@ -189,5 +189,11 @@
 
         #endregion
 
+        #region PayMethod
+
+        public const string PAY_METHOD_GET_ALL = BASE_API_URL + "/api/pay_method/all";
+
+        #endregion
+
     }
 }

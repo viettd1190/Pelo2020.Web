@@ -9,6 +9,7 @@ using Pelo.Common.Dtos.Branch;
 using Pelo.Common.Dtos.Crm;
 using Pelo.Common.Dtos.Invoice;
 using Pelo.Common.Dtos.InvoiceStatus;
+using Pelo.Common.Dtos.PayMethod;
 using Pelo.Common.Dtos.Product;
 using Pelo.Common.Dtos.User;
 using Pelo.Web.Attributes;
@@ -40,12 +41,15 @@ namespace Pelo.Web.Controllers
 
         private IProductService _productService;
 
+        private IPayMethodService _payMethodService;
+
         public InvoiceController(IInvoiceStatusService invoiceStatusService,
                                  IBranchService branchService,
                                  IUserService userService,
                                  IInvoiceService invoiceService,
                                  ICustomerService customerService,
                                  IProductService productService,
+                                 IPayMethodService payMethodService,
                                  IMapper mapper,
                                  ILogger<InvoiceController> logger) : base(logger)
         {
@@ -55,6 +59,7 @@ namespace Pelo.Web.Controllers
             _invoiceService = invoiceService;
             _customerService = customerService;
             _productService = productService;
+            _payMethodService = payMethodService;
             _mapper = mapper;
         }
 
@@ -142,6 +147,27 @@ namespace Pelo.Web.Controllers
             }
         }
 
+        private async Task<Tuple<IEnumerable<PayMethodSimpleModel>, string>> GetAllPayMethods()
+        {
+            try
+            {
+                var payMethods = await _payMethodService.GetAll();
+                if (payMethods.IsSuccess)
+                    return new Tuple<IEnumerable<PayMethodSimpleModel>, string>(payMethods.Data,
+                                                                              string.Empty);
+
+                Logger.LogInformation(payMethods.Message);
+                return new Tuple<IEnumerable<PayMethodSimpleModel>, string>(new List<PayMethodSimpleModel>(),
+                                                                          payMethods.Message);
+            }
+            catch (Exception exception)
+            {
+                Logger.LogInformation(exception.ToString());
+                return new Tuple<IEnumerable<PayMethodSimpleModel>, string>(new List<PayMethodSimpleModel>(),
+                                                                          exception.ToString());
+            }
+        }
+
         private async Task SetViewBag()
         {
             var users = await GetAllUsers();
@@ -201,6 +227,13 @@ namespace Pelo.Web.Controllers
             if(!string.IsNullOrEmpty(products.Item2))
             {
                 ModelState.AddModelError("",products.Item2);
+            }
+
+            var payMethods = await GetAllPayMethods();
+            ViewBag.PayMethods = payMethods.Item1.ToList();
+            if (!string.IsNullOrEmpty(payMethods.Item2))
+            {
+                ModelState.AddModelError("", payMethods.Item2);
             }
 
             var branches = await GetAllBranches();

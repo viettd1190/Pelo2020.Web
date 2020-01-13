@@ -1,4 +1,5 @@
-﻿@using Pelo.Common.Dtos.Product
+﻿@using Pelo.Common.Dtos.PayMethod
+@using Pelo.Common.Dtos.Product
 @model Pelo.Web.Models.Invoice.InsertInvoiceModel
 
 @{
@@ -93,6 +94,7 @@
         <hr />
         <form class="row" method="post">
             <div class="col-sm-12 col-md-6">
+                <h4></h4>
                 <div class="form-group form-group--float">
                     <select class="form-control select2" id="txtProduct" onchange="selectProduct();">
                         <option value="0">--Chọn thêm sản phẩm--</option>
@@ -121,8 +123,42 @@
                     </thead>
                     <tbody id="bodyProduct">
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Tổng cộng:</th>
+                        <th colspan="2"><input class="form-control" style="text-align:right;" id="totalInvoice" readonly="readonly" /></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Giảm giá:</th>
+                        <th colspan="2">
+                            @Html.TextBoxFor(c => c.Discount, new
+                                                              {
+                                                                      @class = "form-control",
+                                                                      @onblur = "changeDiscount();",
+                                                                      @type = "number",
+                                                                      @style = "text-align:right;"
+                                                              })
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Thanh toán:</th>
+                        <th colspan="2">
+                            <input class="form-control" style="text-align:right;" id="totalAfterDiscount" readonly="readonly" />
+                        </th>
+                    </tr>
+                    </tfoot>
                 </table>
-                <br/>
+                <hr/>
+                @*<br/>
                 <hr/>
                 <div class="col-md-8">.</div>
                 <div class="col-md-3">
@@ -151,6 +187,23 @@
                             </td>
                         </tr>
                     </table>
+                </div>*@
+            </div>
+            <div class="col-md-12">
+                <div class="form-group form-group--float">
+                    <select id="PayMethodId" name="PayMethodId" class="form-control select2">
+                        <option value="0">--Hình thức thanh toán--</option>
+                        @{
+                            var payMethods = ViewBag.PayMethods as List<PayMethodSimpleModel>;
+                            if(payMethods!=null) {
+                                foreach (var payMethod in payMethods) {
+                                    <option value="@payMethod.Id">@payMethod.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <i class="form-group__bar"></i>
+                    @Html.ValidationMessageFor(c => c.PayMethodId)
                 </div>
             </div>
         </form>
