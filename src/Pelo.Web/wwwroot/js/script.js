@@ -98,7 +98,7 @@ var Util = {
     number: {
         format: function (e) {
             if (e > 0) {
-                e.toFixed(1);
+                parseFloat(e).toFixed(1);
                 e += "";
                 var t = e.split(".");
                 var n = t[0];

@@ -3,7 +3,7 @@
     <div class="scrollbar-inner">
         <div class="user">
             <div class="user__info" data-toggle="dropdown">
-                <img class="user__img" src="@(((ClaimsIdentity) User.Identity).Claims.ToList()[2].Value)" alt="">
+                <img class="user__img" src="~/@(((ClaimsIdentity) User.Identity).Claims.ToList()[3].Value)" alt="">
                 <div>
                     <div class="user__name">@User.Identity.Name</div>
                     <div class="user__email">@(((ClaimsIdentity)User.Identity).Claims.ToList()[1].Value)</div>

@@ -17,6 +17,7 @@
         color: #666EE8;
         padding-left: 5px;
     }
+
 </style>
 
 <div class="card">
@@ -30,9 +31,6 @@
             </li>
             <li class="breadcrumb-item active">Thêm đơn hàng</li>
         </ol>
-        <div class=" row col-md-12 form-group">
-            <h4 class="card-title">THÔNG TIN KHÁCH HÀNG</h4>
-        </div>
         <div class="row form-group">
             <div class="col-lg-4">
                 <label class="label-title col-form-label"><strong>Mã khách hàng: </strong></label>
@@ -94,27 +92,66 @@
         }
         <hr />
         <form class="row" method="post">
-            <div class="form-group form-group--float">
-                <select class="form-control select2" id="txtProduct">
-                    <option value="0">--Chọn thêm sản phẩm--</option>
-                    @{
-                        var products = ViewBag.Products as List<ProductSimpleModel>;
-                        if(products!=null) {
-                            foreach (var product in products) {
-                                <option value="@product.Id" data-price="@product.SellPrice">@product.Name</option>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group form-group--float">
+                    <select class="form-control select2" id="txtProduct" onchange="selectProduct();">
+                        <option value="0">--Chọn thêm sản phẩm--</option>
+                        @{
+                            var products = ViewBag.Products as List<ProductSimpleModel>;
+                            if(products != null) {
+                                foreach (var product in products) {
+                                    <option value="@product.Id" data-id="@product.Id" data-price="@product.SellPrice" data-name="@product.Name">@product.Name</option>
+                                }
                             }
                         }
-                    }
-                </select>
-                @*@Html.TextBoxFor(c => c.ContactDate,
-                                 new {
-                                             @class = "form-control",
-                                             @autocomplete = "none",
-                                             @id = "datepicker"
-                                     })
-                <label>Ngày liên hệ</label>
-                <i class="form-group__bar"></i>
-                @Html.ValidationMessageFor(c => c.ContactDate)*@
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <table class="table mb-0">
+                    <thead>
+                    <tr>
+                        <th style="text-align:left;">Tên sản phẩm</th>
+                        <th style="text-align:left;">Ghi chú</th>
+                        <th style="text-align:right;">Đơn giá</th>
+                        <th style="text-align:right;">Số lượng</th>
+                        <th style="text-align:right;">Thành tiền</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="bodyProduct">
+                    </tbody>
+                </table>
+                <br/>
+                <hr/>
+                <div class="col-md-8">.</div>
+                <div class="col-md-3">
+                    <table class="table">
+                        <tr>
+                            <td>Tổng cộng: </td>
+                            <td>
+                                <input class="form-control" style="text-align:right;" id="totalInvoice" readonly="readonly"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Giảm giá: </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Discount,new {
+                                                                           @class="form-control",
+                                                                           @onblur="changeDiscount();",
+                                                                           @type="number",
+                                                                           @style="text-align:right;"
+                                                                   })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thanh toán: </td>
+                            <td>
+                                <input class="form-control" style="text-align:right;" id="totalAfterDiscount" readonly="readonly"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </form>
     </div>
@@ -125,13 +162,69 @@
 @section js{
     <script src="~/vendors/datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <script>
+        var total=0;
+        var totalAfterDiscount=0;
         $(function () {
             $("#datepicker").datetimepicker({ format: 'd-m-Y', lang: 'vi', timepicker: false });
             $("#timepicker").datetimepicker({
-                datepicker: false,
-                format: 'H:i'
-            });
+                    datepicker: false,
+                    format: 'H:i'
+                });
         });
+        function selectProduct() {
+            var productId=$('#txtProduct').val();
+            if (productId != 0) {
+                var trElement = $('#tr-' + productId);
+                if (trElement.length === 0) {
+                    var element = $('option[data-id=' + productId + ']')[0];
+                    var name = element.getAttribute('data-name');
+                    var sellPrice = element.getAttribute('data-price');
+                    var tr = '<tr id="tr-'+productId+'">';
+                    tr += '<td id="name">' + name + '</td>';
+                    tr += '<td id="description"><input class="form-control"/></td>';
+                    tr += '<td id="price"><input id="price-'+productId+'" onblur="changeProduct('+productId+');" class="form-control" style="text-align:right;" value="' + Util.number.format(sellPrice) + '"/></td>';
+                    tr += '<td id="quantity"><input id="quantity-'+productId+'" onblur="changeProduct('+productId+');" class="form-control" type="number" style="text-align:right;" value="1"/></td>';
+                    tr += '<td id="total"><input id="total-'+productId+'" class="form-control" readonly="readonly" style="text-align:right;" value="' + Util.number.format(sellPrice) + '"/></td>';
+                    tr+='<td><a class="btn btn-danger" href="javascript:deleteProduct('+productId+');">Xóa</a></td>';
+                    tr += '</tr>';
+                    total += parseInt(sellPrice);
+                    totalAfterDiscount += parseInt(sellPrice);
+                    $('#bodyProduct').append(tr);
+                    displayTotalAmount();
+                }
+            }
+        }
+        function displayTotalAmount() {
+            $('#totalInvoice').val(Util.number.format(total));
+            $('#totalAfterDiscount').val(Util.number.format(totalAfterDiscount));
+        }
+        function deleteProduct(id) {
+            var sellPrice = parseInt($('#price-' + id).val().replace(/,/g, ''));
+            var quantity = parseInt($('#quantity-' + id).val());
+            var removeAmount = sellPrice * quantity;
+            total -= removeAmount;
+            totalAfterDiscount -= removeAmount;
+            displayTotalAmount();
+            $('#tr-' + id).remove();
+        }
+        function changeProduct(id) {
+            var sellPrice = parseInt($('#price-' + id).val().replace(/,/g, ''));
+            var quantity = parseInt($('#quantity-' + id).val());
+            var totalAmount = parseInt($('#total-' + id).val().replace(/,/g, ''));
+            $('#total-' + id).val(Util.number.format(sellPrice * quantity));
+            $('#price-' + id).val(Util.number.format(sellPrice));
+            total -= totalAmount;
+            totalAfterDiscount -= totalAmount;
+            total += sellPrice * quantity;
+            totalAfterDiscount += sellPrice * quantity;
+            displayTotalAmount();
+        }
+        function changeDiscount() {
+            var discount=$('#Discount').val().replace(/,/g, '');
+            $('#Discount').val(Util.number.format(discount));
+            totalAfterDiscount -= discount;
+            displayTotalAmount();
+        }
     </script>
 }
 
