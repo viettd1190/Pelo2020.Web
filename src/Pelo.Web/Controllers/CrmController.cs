@@ -564,7 +564,7 @@ namespace Pelo.Web.Controllers
                     Id = model.Id,
                     CrmStatusId = model.CrmStatusId,
                     Comment = model.Comment,
-                    File = model.File
+                    //File = model.File
                 });
                 if (rs.IsSuccess)
                 {
