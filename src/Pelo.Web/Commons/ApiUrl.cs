@@ -15,11 +15,31 @@
 
         public const string ROLE_GET_ALL = BASE_API_URL + "/api/role/all";
 
+        public const string ROLE_PAGING = BASE_API_URL + "/api/role?name={0}&column_order={1}&sort_dir={2}page={3}&page_size={4}";
+
+        public const string ROLE_INSERT = BASE_API_URL + "/api/role";
+
+        public const string ROLE_UPDATE = BASE_API_URL + "/api/role";
+
+        public const string ROLE_DELETE = BASE_API_URL + "/api/role/{0}";
+
+        public const string GET_ROLE_ID = BASE_API_URL + "/api/role/{0}";
+
         #endregion
 
         #region Branch
 
         public const string BRANCH_GET_ALL = BASE_API_URL + "/api/branch/all";
+
+        public const string BRANCH_PAGING = BASE_API_URL + "/api/branch?name={0}&provinceId={1}&districtId={1}&wardId={1}&column_order={1}&sort_dir={2}page={3}&page_size={4}";
+
+        public const string BRANCH_INSERT = BASE_API_URL + "/api/branch";
+
+        public const string BRANCH_UPDATE = BASE_API_URL + "/api/branch";
+
+        public const string BRANCH_DELETE = BASE_API_URL + "/api/branch/{0}";
+
+        public const string GET_BRANCH_ID = BASE_API_URL + "/api/branch/{0}";
 
         #endregion
 
@@ -123,6 +143,15 @@
 
         public const string CRM_STATUS_GET_ALL = BASE_API_URL + "/api/crm_status/all";
 
+        public const string CRM_STATUS_PAGING= BASE_API_URL + "/api/crm_status?name={0}&column_order={1}&sort_dir={2}page={3}&page_size={4}";
+
+        public const string CRM_STATUS_INSERT = BASE_API_URL + "/api/crm_status";
+
+        public const string CRM_STATUS_UPDATE = BASE_API_URL + "/api/crm_status";
+
+        public const string CRM_STATUS_DELETE = BASE_API_URL + "/api/crm_status/{0}";
+
+        public const string GET_CRM_STATUS_ID = BASE_API_URL + "/api/crm_status/{0}";
         #endregion
 
         #region CrmType
@@ -134,6 +163,16 @@
         #region CrmPriority
 
         public const string CRM_PRIORITY_GET_ALL = BASE_API_URL + "/api/crm_priority/all";
+
+        public const string CRM_PRIORITY_PAGING = BASE_API_URL + "/api/crm_priority?name={0}&column_order={1}&sort_dir={2}page={3}&page_size={4}";
+
+        public const string CRM_PRIORITY_INSERT = BASE_API_URL + "/api/crm_priority";
+
+        public const string CRM_PRIORITY_UPDATE = BASE_API_URL + "/api/crm_priority";
+
+        public const string CRM_PRIORITY_DELETE = BASE_API_URL + "/api/crm_priority/{0}";
+
+        public const string GET_CRM_PRIORITY_ID = BASE_API_URL + "/api/crm_priority/{0}";
 
         #endregion
 
